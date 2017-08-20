@@ -1,5 +1,5 @@
 namespace java org.michhon.ping.thriftjava
-#@namespace scala org.micchon.ping.thriftscala
+#@namespace scala org.example.ping.thriftscala
 namespace rb Ping
 
 include "finatra-thrift/finatra_thrift_exceptions.thrift"

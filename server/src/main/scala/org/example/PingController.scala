@@ -1,4 +1,4 @@
-package org.micchon
+package org.example
 
 import org.micchon.ping.thriftscala.PingService
 import org.micchon.ping.thriftscala.PingService.{Echo, Ping}

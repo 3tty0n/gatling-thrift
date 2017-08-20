@@ -1,4 +1,4 @@
-package org.micchon
+package org.example
 
 import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter

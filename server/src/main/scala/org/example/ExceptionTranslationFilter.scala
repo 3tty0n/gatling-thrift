@@ -1,4 +1,4 @@
-package org.micchon
+package org.example
 
 import com.twitter.finagle.{Service, TimeoutException}
 import com.twitter.finatra.thrift.thriftscala.ClientErrorCause.RequestTimeout
