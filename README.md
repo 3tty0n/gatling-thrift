@@ -2,8 +2,6 @@
 
 This is a load testing tool for thrift server.
 
-The version of gatling in this project is __2.1.7__ .
-
 ## How to do load test
 
 First, compile and start the finatra server.
@@ -25,7 +23,7 @@ Then, execute the following command in another session.
 2. Exectute
 
   ``` bash
-  $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.ThriftSimulation
+  $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.testrunner.ThriftSimulation
   ```
 
 

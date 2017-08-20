@@ -8,7 +8,7 @@ lazy val versions = new {
   val logback = "1.1.7"
   val scalatest = "3.0.0"
   val specs2 = "2.4.17"
-  val gatling = "2.1.7"
+  val gatling = "2.2.1"
   val akka = "2.4.16"
 }
 
@@ -33,8 +33,11 @@ lazy val baseSettings = Seq(
   fork in run := true,
   assemblyMergeStrategy in assembly := {
     case "BUILD" => MergeStrategy.discard
+    case PathList("io", "netty", xs @_*) => MergeStrategy.first
     case meta(_)  => MergeStrategy.discard // or MergeStrategy.discard, your choice
-    case other => MergeStrategy.defaultMergeStrategy(other)
+    case x =>
+      val oldStrategy = (assemblyMergeStrategy in assembly).value
+      oldStrategy(x)
   }
 )
 
