@@ -38,7 +38,8 @@ lazy val baseSettings = Seq(
     case x =>
       val oldStrategy = (assemblyMergeStrategy in assembly).value
       oldStrategy(x)
-  }
+  },
+  test in assembly := {}
 )
 
 lazy val meta = """META.INF(.)*""".r
