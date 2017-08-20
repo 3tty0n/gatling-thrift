@@ -48,7 +48,7 @@ $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift
 In this project, `sbt-native-packager` is enabled. So you can publish the fat jar of `loadtest` module to execute following commands.
 
 ``` bash
-$ sbt pubslih // in local, sbt publishLocal
+$ sbt pubslih # in local, sbt publishLocal
 ```
 
 ## How to construct the scenario of the load testing
