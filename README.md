@@ -55,7 +55,7 @@ If you want to execute the load test packaged by `sbt-native-packager`, execute 
 
 ``` bash
 $ cd /path/to/gatling-loadtest/1.0.0-SNAPSHOT/zips
-$ unzip gatling-laodtest
+$ unzip gatling-laodtest.zip && cd gatling-loadtest-1.0.0-SNAPSHOT
 $ bin/gatling-loadtest -s io.gatling.thrift.testruuner.ThriftSimulation
 ```
 
