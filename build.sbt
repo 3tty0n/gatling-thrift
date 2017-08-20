@@ -50,7 +50,7 @@ lazy val meta = """META.INF(.)*""".r
 lazy val root = (project in file("."))
   .settings(name := "finatra-thrift-server-example", run := {
     (run in `server` in Compile).evaluated
-  }, publish := {})
+  }, publish := {}, publishLocal := {})
   .aggregate(server, idl, loadtest)
 
 lazy val server = (project in file("server"))
