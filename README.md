@@ -4,7 +4,7 @@ This is a load testing tool for thrift server.
 
 You can execute your load test in command line.
 
-## How to do
+## Quick start
 
 ### For Example
 
