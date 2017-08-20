@@ -14,7 +14,8 @@ lazy val versions = new {
 
 lazy val baseSettings = Seq(
   version := "1.0.0-SNAPSHOT",
-  scalaVersion in ThisBuild := "2.11.11",
+  organization := "com.github.3tty0n",
+  scalaVersion := "2.11.11",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
   scalafmtOnCompile in ThisBuild := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
@@ -32,29 +33,24 @@ lazy val baseSettings = Seq(
     "org.scalatest" %% "scalatest" % versions.scalatest % "test"
   ),
   resolvers += Resolver.sonatypeRepo("releases"),
-  fork in run := true,
-  assemblyMergeStrategy in assembly := {
-    case "BUILD"                           => MergeStrategy.discard
-    case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
-    case meta(_) =>
-      MergeStrategy.discard // or MergeStrategy.discard, your choice
-    case x =>
-      val oldStrategy = (assemblyMergeStrategy in assembly).value
-      oldStrategy(x)
-  },
-  test in assembly := {}
+  fork in run := true
 )
+
+lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
+  case "BUILD"                           => MergeStrategy.discard
+  case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
+  case meta(_)                           => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}, test in assembly := {})
 
 lazy val meta = """META.INF(.)*""".r
 
 lazy val root = (project in file("."))
-  .settings(
-    name := "finatra-thrift-server-example",
-    organization := "org.micchon",
-    run := {
-      (run in `server` in Compile).evaluated
-    }
-  )
+  .settings(name := "finatra-thrift-server-example", run := {
+    (run in `server` in Compile).evaluated
+  }, publish := {})
   .aggregate(server, idl, loadtest)
 
 lazy val server = (project in file("server"))
@@ -62,7 +58,7 @@ lazy val server = (project in file("server"))
   .settings(
     name := "thrift-server",
     moduleName := "thrift-server",
-    mainClass in (Compile, run) := Some("org.micchon.ExampleServerMain"),
+    mainClass in (Compile, run) := Some("org.example.ExampleServerMain"),
     javaOptions ++= Seq(
       "-Dlog.service.output=/dev/stderr",
       "-Dlog.access.output=/dev/stderr"
@@ -81,7 +77,9 @@ lazy val server = (project in file("server"))
       "com.twitter" %% "inject-core" % versions.finatra % "test" classifier "tests",
       "com.twitter" %% "inject-modules" % versions.finatra % "test" classifier "tests",
       "com.twitter" %% "inject-server" % versions.finatra % "test" classifier "tests"
-    )
+    ),
+    publish := {},
+    publishLocal := {}
   )
   .dependsOn(idl)
 
@@ -93,22 +91,52 @@ lazy val idl = (project in file("idl"))
     scroogeThriftDependencies in Compile := Seq("finatra-thrift_2.11"),
     libraryDependencies ++= Seq(
       "com.twitter" %% "finatra-thrift" % versions.finatra
-    )
+    ),
+    publish := {},
+    publishLocal := {}
   )
 
 lazy val loadtest = (project in file("loadtest"))
-  .enablePlugins(GatlingPlugin)
-  .settings(baseSettings)
+  .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
+  .settings(baseSettings, assemblySettings)
   .settings(
-    name := "gatling-load-test",
+    name := "gatling-loadtest",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-app" % versions.gatling,
+      "io.gatling" % "gatling-test-framework" % versions.gatling,
       "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
         exclude ("io.gatling", "gatling-recorder"),
-      "io.gatling" % "gatling-test-framework" % versions.gatling,
       "com.typesafe.akka" %% "akka-stream" % versions.akka
     ),
     assemblyJarName in assembly := "gatling-loadtest.jar",
-    mainClass in assembly := Some("io.gatling.thrift.testrunner.GatlingRunner")
+    mainClass in assembly := Some(
+      "io.gatling.thrift.testrunner.GatlingRunner"
+    ),
+    mappings in Universal := {
+      val universalMappings = (mappings in Universal).value
+      val fatJar = (assembly in Compile).value
+      val filtered = universalMappings.filter {
+        case (file, name) => !name.endsWith(".jar")
+      }
+      filtered :+ (fatJar -> ("lib/" + fatJar.getName))
+    },
+    scriptClasspath := Seq((assemblyJarName in assembly).value),
+    publish := (publish in Universal).value,
+    publishLocal := (publishLocal in Universal).value
   )
   .dependsOn(idl)
+
+lazy val `user-files` = (project in file("user-files"))
+  .settings(baseSettings)
+  .settings(
+    name := "user-files",
+    libraryDependencies ++= Seq(
+      "io.gatling" % "gatling-app" % versions.gatling,
+      "io.gatling" % "gatling-test-framework" % versions.gatling,
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
+        exclude ("io.gatling", "gatling-recorder")
+    ),
+    publish := {},
+    publishLocal := {}
+  )
+  .dependsOn(loadtest)
