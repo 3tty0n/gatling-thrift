@@ -1,6 +1,8 @@
-# gatling-thrift-testasjar
+# gatling-thrift
 
 This is a load testing tool for thrift server.
+
+You can execute your load test in command line.
 
 ## How to do load test
 
