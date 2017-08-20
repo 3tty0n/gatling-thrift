@@ -41,6 +41,8 @@ lazy val baseSettings = Seq(
   }
 )
 
+lazy val meta = """META.INF(.)*""".r
+
 lazy val root = (project in file("."))
   .settings(
     name := "finatra-thrift-server-example",
@@ -93,8 +95,6 @@ lazy val idl = (project in file("idl"))
       "com.twitter" %% "finatra-thrift" % versions.finatra
     )
   )
-
-lazy val meta = """META.INF(.)*""".r
 
 lazy val loadtest = (project in file("loadtest"))
   .enablePlugins(GatlingPlugin)
