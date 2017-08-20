@@ -51,6 +51,14 @@ In this project, `sbt-native-packager` is enabled. So you can publish the fat ja
 $ sbt pubslih # in local, sbt publishLocal
 ```
 
+If you want to execute the load test packaged by `sbt-native-packager`, execute commands as below.
+
+``` bash
+$ cd /path/to/gatling-loadtest/1.0.0-SNAPSHOT/zips
+$ unzip gatling-laodtest
+$ bin/gatling-loadtest -s io.gatling.thrift.testruuner.ThriftSimulation
+```
+
 ## How to construct the scenario of the load testing
 
 - [Inject](http://gatling.io/docs/current/general/simulation_setup/)
