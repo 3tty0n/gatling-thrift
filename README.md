@@ -4,7 +4,7 @@ This is a load testing tool for thrift server.
 
 You can execute your load test in command line.
 
-## How to do load test
+## How to do
 
 ### For Example
 
@@ -34,7 +34,7 @@ $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift
   
 ## Customize your simulation
 
-Implement `YourSimulation.scala` in `loadtest` package like [this](https://github.com/3tty0n/gatling-thrift-testasjar/blob/master/loadtest/src/main/scala/io/gatling/thrift/testrunner/ThriftSimulation.scala).
+Implement `YourSimulation.scala` at `io.gatling.thrift.testrunner` package in `loadtest` module  like [this](https://github.com/3tty0n/gatling-thrift-testasjar/blob/master/loadtest/src/main/scala/io/gatling/thrift/testrunner/ThriftSimulation.scala).
 
 And execte as below.
 
@@ -43,6 +43,13 @@ $ sbt loadtest/assembly
 $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.testrunner.YourSimulation
 ```
 
+## Publish
+
+In this project, `sbt-native-packager` is enabled. So you can publish the fat jar of `loadtest` module to execute following commands.
+
+``` bash
+$ sbt pubslih // in local, sbt publishLocal
+```
 
 ## How to construct the scenario of the load testing
 
