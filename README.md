@@ -14,9 +14,20 @@ $ sbt run
 
 Then, execute the following command in another session.
 
+### In your command line
+
+1. Create the jar
+
 ```bash
-$ sbt loadtest/gatling:test
+$ sbt loadtest/assembly
 ```
+
+2. Exectute
+
+``` bash
+$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.ThriftSimulation
+```
+
 
 ## How to construct the scenario of the load testing
 
