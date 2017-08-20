@@ -6,27 +6,31 @@ You can execute your load test in command line.
 
 ## How to do load test
 
-First, compile and start the finatra server.
+### For Example
+
+1. Clone this reposiory
+
+```bash
+$ git clone git@github.com:3tty0n/gatling-thrift.git
+```
+
+2. Compile and start the finatra server.
 
 ```bash
 $ sbt compile run
 ```
 
-Then, execute the following command in another session.
+3. Create the fat jar
 
-### In your command line
+```bash
+$ sbt loadtest/assembly
+```
 
-1. Create the jar
+4. Exectute the load test
 
-  ```bash
-  $ sbt loadtest/assembly
-  ```
-
-2. Exectute
-
-  ``` bash
-  $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.testrunner.ThriftSimulation
-  ```
+``` bash
+$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.testrunner.ThriftSimulation
+```
   
 ## Customize your simulation
 
