@@ -6,11 +6,9 @@ import io.gatling.core.config.GatlingConfiguration
 
 object GatlingRunner {
   def main(args: Array[String]): Unit = {
-    GatlingConfiguration.setUp(CliArgumentParser.parseCliArguments(args))
-
     val simulationClass = getClass
       .getClassLoader
-      .loadClass(GatlingConfiguration.configuration.core.simulationClass.get)
+      .loadClass(GatlingConfiguration.load(CliArgumentParser.parseCliArguments(args)).core.simulationClass.get)
       .asInstanceOf[Class[Simulation]]
 
     Gatling.fromArgs(args, Some(simulationClass))

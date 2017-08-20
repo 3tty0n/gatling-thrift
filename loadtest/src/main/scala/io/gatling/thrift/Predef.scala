@@ -1,7 +1,11 @@
 package io.gatling.thrift
 
-object Predef {
-  case class Address(value: String)
+import io.gatling.thrift.protocol.ThriftProtocol
 
-  case class Port(value: String)
+object Predef {
+  case class Address(value: String = "localhost")
+
+  case class Port(value: Int = 9911)
+
+  def thrift(address: Address, port: Port) = new ThriftProtocol(address, port)
 }
