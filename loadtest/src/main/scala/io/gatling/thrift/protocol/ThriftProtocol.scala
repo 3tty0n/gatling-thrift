@@ -13,7 +13,8 @@ class ThriftProtocol(address: Address, port: Port) extends Protocol {
 
 object ThriftProtocol {
 
-  def apply(address: Address, port: Port): ThriftProtocol = new ThriftProtocol(address, port)
+  def apply(address: Address, port: Port): ThriftProtocol =
+    new ThriftProtocol(address, port)
 
   val ThriftProtocolKey = new ProtocolKey {
     override type Protocol = ThriftProtocol
@@ -21,7 +22,8 @@ object ThriftProtocol {
 
     override def protocolClass =
       //classOf[ThriftProtocol].asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
-    classOf[ThriftProtocol].asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
+      classOf[ThriftProtocol]
+        .asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
 
     override def defaultValue(configuration: GatlingConfiguration) =
       new ThriftProtocol(Address(), Port())
@@ -29,13 +31,14 @@ object ThriftProtocol {
     override def newComponents(
       system: ActorSystem,
       coreComponents: CoreComponents
-    ): ThriftProtocol => ThriftComponents = {
-      thriftProtocol => ThriftComponents(thriftProtocol)
+    ): ThriftProtocol => ThriftComponents = { thriftProtocol =>
+      ThriftComponents(thriftProtocol)
     }
   }
 }
 
-case class ThriftComponents(thriftProtocol: ThriftProtocol) extends ProtocolComponents {
+case class ThriftComponents(thriftProtocol: ThriftProtocol)
+    extends ProtocolComponents {
   override def onStart: Option[(Session) => Session] = None
 
   override def onExit: Option[(Session) => Unit] = None

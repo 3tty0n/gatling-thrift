@@ -14,7 +14,9 @@ class ThriftSimulation extends Thrift[PingService.FutureIface] {
 
   val client = ThriftClientBuilder(Address(), Port()).build()
 
-  val thriftAction = ThriftActionBuilder(client.echo(new Random().nextInt().toString))
+  val thriftAction = ThriftActionBuilder(
+    client.echo(new Random().nextInt().toString)
+  )
 
   val scn = scenario("Thrift protocol test")
     .repeat(2) { exec(thriftAction) }
@@ -29,7 +31,9 @@ class ThriftSimulation extends Thrift[PingService.FutureIface] {
       rampUsersPerSec(10) to 20 during (3 seconds),
       rampUsersPerSec(10) to 20 during (2 seconds) randomized,
       splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy (10 seconds),
-      splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy atOnceUsers(30),
+      splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy atOnceUsers(
+        30
+      ),
       heavisideUsers(50) over (20 seconds)
     )
   ).assertions(

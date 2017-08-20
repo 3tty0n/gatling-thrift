@@ -10,7 +10,7 @@ object CliArgumentParser {
 
     argsParser.parseArguments match {
       case Left(commandLineOverrides) => commandLineOverrides
-      case Right(statusCode) => mutable.Map[String, Any]()
+      case Right(statusCode)          => mutable.Map[String, Any]()
     }
   }
 }

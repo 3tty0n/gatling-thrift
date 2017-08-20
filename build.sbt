@@ -14,7 +14,9 @@ lazy val versions = new {
 
 lazy val baseSettings = Seq(
   version := "1.0.0-SNAPSHOT",
-  scalaVersion := "2.11.11",
+  scalaVersion in ThisBuild := "2.11.11",
+  scalafmtVersion in ThisBuild := "1.0.0-RC2",
+  scalafmtOnCompile in ThisBuild := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(
     "-encoding",
@@ -32,9 +34,10 @@ lazy val baseSettings = Seq(
   resolvers += Resolver.sonatypeRepo("releases"),
   fork in run := true,
   assemblyMergeStrategy in assembly := {
-    case "BUILD" => MergeStrategy.discard
-    case PathList("io", "netty", xs @_*) => MergeStrategy.first
-    case meta(_)  => MergeStrategy.discard // or MergeStrategy.discard, your choice
+    case "BUILD"                           => MergeStrategy.discard
+    case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
+    case meta(_) =>
+      MergeStrategy.discard // or MergeStrategy.discard, your choice
     case x =>
       val oldStrategy = (assemblyMergeStrategy in assembly).value
       oldStrategy(x)
@@ -52,11 +55,7 @@ lazy val root = (project in file("."))
       (run in `server` in Compile).evaluated
     }
   )
-  .aggregate(
-    server,
-    idl,
-    loadtest
-  )
+  .aggregate(server, idl, loadtest)
 
 lazy val server = (project in file("server"))
   .settings(baseSettings)
@@ -105,7 +104,7 @@ lazy val loadtest = (project in file("loadtest"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-app" % versions.gatling,
       "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
-        exclude("io.gatling", "gatling-recorder"),
+        exclude ("io.gatling", "gatling-recorder"),
       "io.gatling" % "gatling-test-framework" % versions.gatling,
       "com.typesafe.akka" %% "akka-stream" % versions.akka
     ),

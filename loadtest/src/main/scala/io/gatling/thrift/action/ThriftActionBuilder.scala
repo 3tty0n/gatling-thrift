@@ -13,8 +13,11 @@ import io.gatling.core.structure.ScenarioContext
 import io.gatling.core.util.NameGen
 import io.gatling.thrift.protocol.ThriftProtocol
 
-class ThriftConnect[A](val statsEngine: StatsEngine, val next: Action, callback: => Future[A])
-  extends ExitableAction with NameGen {
+class ThriftConnect[A](val statsEngine: StatsEngine,
+                       val next: Action,
+                       callback: => Future[A])
+    extends ExitableAction
+    with NameGen {
   override def name: String = genName("thriftConnect")
 
   override def execute(session: Session): Unit = {
@@ -24,13 +27,27 @@ class ThriftConnect[A](val statsEngine: StatsEngine, val next: Action, callback:
         val end = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
         logger.info(v.toString)
-        statsEngine.logResponse(session, "thrift session", timings, OK, None, None)
+        statsEngine.logResponse(
+          session,
+          "thrift session",
+          timings,
+          OK,
+          None,
+          None
+        )
         next ! session
       case Throw(e) =>
         val end = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
         logger.info(e.getMessage)
-        statsEngine.logResponse(session, "thrift session", timings, KO, None, None)
+        statsEngine.logResponse(
+          session,
+          "thrift session",
+          timings,
+          KO,
+          None,
+          None
+        )
         next ! session
     }
 
@@ -39,7 +56,9 @@ class ThriftConnect[A](val statsEngine: StatsEngine, val next: Action, callback:
 
 class ThriftActionBuilder[A](callBack: => Future[A]) extends ActionBuilder {
 
-  private def components(protocolComponentsRegistry: ProtocolComponentsRegistry) =
+  private def components(
+    protocolComponentsRegistry: ProtocolComponentsRegistry
+  ) =
     protocolComponentsRegistry.components(ThriftProtocol.ThriftProtocolKey)
 
   override def build(ctx: ScenarioContext, next: Action): Action = {
