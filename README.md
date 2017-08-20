@@ -1,4 +1,4 @@
-# gatling-thrift-mono
+# gatling-thrift-testasjar
 
 This is a load testing tool for thrift server.
 
@@ -18,15 +18,15 @@ Then, execute the following command in another session.
 
 1. Create the jar
 
-```bash
-$ sbt loadtest/assembly
-```
+  ```bash
+  $ sbt loadtest/assembly
+  ```
 
 2. Exectute
 
-``` bash
-$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.ThriftSimulation
-```
+  ``` bash
+  $ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.ThriftSimulation
+  ```
 
 
 ## How to construct the scenario of the load testing
