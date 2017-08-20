@@ -6,10 +6,10 @@ The version of gatling in this project is __2.1.7__ .
 
 ## How to do load test
 
-First, start the finatra server.
+First, compile and start the finatra server.
 
 ```bash
-$ sbt run
+$ sbt compile run
 ```
 
 Then, execute the following command in another session.
