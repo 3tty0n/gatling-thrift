@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 
 class ThriftSimulation extends Thrift[PingService.FutureIface] {
 
-  val client = ThriftClientBuilder(Address("localhost"), Port("9911")).client
+  val client = ThriftClientBuilder(Address("localhost"), Port("9911")).build
 
   val thriftAction = new ActionBuilder {
     override def build(next: ActorRef, protocols: Protocols): ActorRef = {

@@ -6,7 +6,7 @@ import com.twitter.finagle.Thrift
 
 class ThriftClientBuilder(address: Address, port: Port) {
 
-  val client: PingService.FutureIface =
+  def build(): PingService.FutureIface =
     Thrift.client
       .newIface[PingService.FutureIface](s"${address.value}:${port.value}")
 
