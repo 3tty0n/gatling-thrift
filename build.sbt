@@ -10,6 +10,7 @@ lazy val versions = new {
   val specs2 = "2.4.17"
   val gatling = "2.2.1"
   val akka = "2.4.16"
+  val config = "1.3.1"
 }
 
 lazy val baseSettings = Seq(
@@ -30,7 +31,8 @@ lazy val baseSettings = Seq(
     "-language:postfixOps"
   ),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % versions.scalatest % "test"
+    "org.scalatest" %% "scalatest" % versions.scalatest % "test",
+    "com.typesafe" % "config" % versions.config
   ),
   resolvers += Resolver.sonatypeRepo("releases"),
   fork in run := true
