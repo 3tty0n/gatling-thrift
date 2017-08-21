@@ -125,18 +125,3 @@ lazy val loadtest = (project in file("loadtest"))
     publishLocal := (publishLocal in Universal).value
   )
   .dependsOn(idl)
-
-lazy val `user-files` = (project in file("user-files"))
-  .settings(baseSettings)
-  .settings(
-    name := "user-files",
-    libraryDependencies ++= Seq(
-      "io.gatling" % "gatling-app" % versions.gatling,
-      "io.gatling" % "gatling-test-framework" % versions.gatling,
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
-        exclude ("io.gatling", "gatling-recorder")
-    ),
-    publish := {},
-    publishLocal := {}
-  )
-  .dependsOn(loadtest)
