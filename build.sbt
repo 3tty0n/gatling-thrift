@@ -39,9 +39,9 @@ lazy val baseSettings = Seq(
 )
 
 lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
-  case "BUILD"                           => MergeStrategy.discard
   case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
   case meta(_)                           => MergeStrategy.discard
+  case "BUILD"                           => MergeStrategy.discard
   case x =>
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
@@ -49,14 +49,17 @@ lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
 
 lazy val meta = """META.INF(.)*""".r
 
+lazy val noPublishSettings = Seq(publish := {}, publishLocal := {})
+
 lazy val root = (project in file("."))
-  .settings(name := "finatra-thrift-server-example", run := {
+  .settings(noPublishSettings)
+  .settings(name := "gatling-thrift", run := {
     (run in `server` in Compile).evaluated
-  }, publish := {}, publishLocal := {})
+  })
   .aggregate(server, idl, loadtest)
 
 lazy val server = (project in file("server"))
-  .settings(baseSettings)
+  .settings(baseSettings, noPublishSettings)
   .settings(
     name := "thrift-server",
     moduleName := "thrift-server",
@@ -79,23 +82,19 @@ lazy val server = (project in file("server"))
       "com.twitter" %% "inject-core" % versions.finatra % "test" classifier "tests",
       "com.twitter" %% "inject-modules" % versions.finatra % "test" classifier "tests",
       "com.twitter" %% "inject-server" % versions.finatra % "test" classifier "tests"
-    ),
-    publish := {},
-    publishLocal := {}
+    )
   )
   .dependsOn(idl)
 
 lazy val idl = (project in file("idl"))
-  .settings(baseSettings)
+  .settings(baseSettings, noPublishSettings)
   .settings(
     name := "thrift-idl",
     moduleName := "thrift-idl",
     scroogeThriftDependencies in Compile := Seq("finatra-thrift_2.11"),
     libraryDependencies ++= Seq(
       "com.twitter" %% "finatra-thrift" % versions.finatra
-    ),
-    publish := {},
-    publishLocal := {}
+    )
   )
 
 lazy val loadtest = (project in file("loadtest"))
