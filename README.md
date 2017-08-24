@@ -40,7 +40,7 @@ And execte as below.
 
 ``` bash
 $ sbt loadtest/assembly
-$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.testrunner.YourSimulation
+$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar --simulation io.gatling.thrift.testrunner.YourSimulation
 ```
 
 ## Publish
