@@ -29,7 +29,7 @@ $ sbt loadtest/assembly
 4. Exectute the load test
 
 ``` bash
-$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar -s io.gatling.thrift.testrunner.ThriftSimulation
+$ java -jar loadtest/target/scala-2.11/gatling-loadtest.jar --simulation io.gatling.thrift.testrunner.ThriftSimulation
 ```
   
 ## Customize your simulation
