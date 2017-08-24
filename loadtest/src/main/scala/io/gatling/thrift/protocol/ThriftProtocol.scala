@@ -21,7 +21,6 @@ object ThriftProtocol {
     override type Components = ThriftComponents
 
     override def protocolClass =
-      //classOf[ThriftProtocol].asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
       classOf[ThriftProtocol]
         .asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
 

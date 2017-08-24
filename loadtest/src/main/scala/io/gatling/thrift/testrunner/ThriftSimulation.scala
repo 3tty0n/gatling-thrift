@@ -15,6 +15,7 @@ class ThriftSimulation extends Thrift[PingService.FutureIface] {
   val client = ThriftClientBuilder(Address(), Port()).build()
 
   val thriftAction = ThriftActionBuilder(
+    "thrift session",
     client.echo(new Random().nextInt().toString)
   )
 

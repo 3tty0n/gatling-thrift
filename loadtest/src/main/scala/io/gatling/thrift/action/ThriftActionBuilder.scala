@@ -15,6 +15,7 @@ import io.gatling.thrift.protocol.ThriftProtocol
 
 class ThriftConnect[A](val statsEngine: StatsEngine,
                        val next: Action,
+                       requestName: String,
                        callback: => Future[A])
     extends ExitableAction
     with NameGen {
@@ -26,35 +27,22 @@ class ThriftConnect[A](val statsEngine: StatsEngine,
       case Return(v) =>
         val end = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
-        logger.info(v.toString)
-        statsEngine.logResponse(
-          session,
-          "thrift session",
-          timings,
-          OK,
-          None,
-          None
-        )
+        logger.info(s"result: $v")
+        statsEngine.logResponse(session, requestName, timings, OK, None, None)
         next ! session
       case Throw(e) =>
         val end = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
-        logger.info(e.getMessage)
-        statsEngine.logResponse(
-          session,
-          "thrift session",
-          timings,
-          KO,
-          None,
-          None
-        )
+        logger.error(s"An error is occurred: ${e.getMessage}", e)
+        statsEngine.logResponse(session, requestName, timings, KO, None, None)
         next ! session
     }
 
   }
 }
 
-class ThriftActionBuilder[A](callBack: => Future[A]) extends ActionBuilder {
+class ThriftActionBuilder[A](requestName: String, callback: => Future[A])
+    extends ActionBuilder {
 
   private def components(
     protocolComponentsRegistry: ProtocolComponentsRegistry
@@ -66,14 +54,12 @@ class ThriftActionBuilder[A](callBack: => Future[A]) extends ActionBuilder {
 
     val statsEngine = coreComponents.statsEngine
     val thriftComponents = components(protocolComponentsRegistry)
-    new ThriftConnect[A](statsEngine, next, callBack)
+    new ThriftConnect[A](statsEngine, next, requestName, callback)
   }
 }
 
 object ThriftActionBuilder {
-  def apply[A](callBack: => Future[A]): ThriftActionBuilder[A] =
-    new ThriftActionBuilder[A](callBack)
-
-  def call[A](next: ActorRef)(callBack: => Future[A]): ThriftActionBuilder[A] =
-    new ThriftActionBuilder[A](callBack)
+  def apply[A](requestName: String,
+               callback: => Future[A]): ThriftActionBuilder[A] =
+    new ThriftActionBuilder[A](requestName, callback)
 }
