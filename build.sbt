@@ -51,7 +51,7 @@ lazy val noPublishSettings = Seq(publish := {}, publishLocal := {})
 lazy val root = (project in file("."))
   .settings(noPublishSettings)
   .settings(name := "gatling-thrift")
-  .aggregate(idl, loadtest)
+  .aggregate(idl, `gatling-thrift`)
 
 lazy val idl = (project in file("idl"))
   .settings(baseSettings, noPublishSettings)
@@ -63,7 +63,7 @@ lazy val idl = (project in file("idl"))
     )
   )
 
-lazy val loadtest = (project in file("loadtest"))
+lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
   .settings(baseSettings, assemblySettings)
   .settings(
