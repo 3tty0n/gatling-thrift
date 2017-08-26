@@ -3,9 +3,7 @@ import sbt.Keys._
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
-  val finatra = "2.10.0"
-  val guice = "4.0"
-  val logback = "1.1.7"
+  val finatra = "2.11.0"
   val scalatest = "3.0.0"
   val specs2 = "2.4.17"
   val gatling = "2.2.1"
@@ -18,7 +16,6 @@ lazy val baseSettings = Seq(
   organization := "com.github.3tty0n",
   scalaVersion := "2.11.11",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
-  scalafmtOnCompile in ThisBuild := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(
     "-encoding",
