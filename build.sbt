@@ -53,45 +53,14 @@ lazy val noPublishSettings = Seq(publish := {}, publishLocal := {})
 
 lazy val root = (project in file("."))
   .settings(noPublishSettings)
-  .settings(name := "gatling-thrift", run := {
-    (run in `server` in Compile).evaluated
-  })
-  .aggregate(server, idl, loadtest)
-
-lazy val server = (project in file("server"))
-  .settings(baseSettings, noPublishSettings)
-  .settings(
-    name := "thrift-server",
-    moduleName := "thrift-server",
-    mainClass in (Compile, run) := Some("org.example.ExampleServerMain"),
-    javaOptions ++= Seq(
-      "-Dlog.service.output=/dev/stderr",
-      "-Dlog.access.output=/dev/stderr"
-    ),
-    libraryDependencies ++= Seq(
-      "com.twitter" %% "finatra-thrift" % versions.finatra,
-      "ch.qos.logback" % "logback-classic" % versions.logback,
-      "com.twitter" %% "finatra-thrift" % versions.finatra % "test",
-      "com.twitter" %% "inject-app" % versions.finatra % "test",
-      "com.twitter" %% "inject-core" % versions.finatra % "test",
-      "com.twitter" %% "inject-modules" % versions.finatra % "test",
-      "com.twitter" %% "inject-server" % versions.finatra % "test",
-      "com.google.inject.extensions" % "guice-testlib" % versions.guice % "test",
-      "com.twitter" %% "finatra-thrift" % versions.finatra % "test" classifier "tests",
-      "com.twitter" %% "inject-app" % versions.finatra % "test" classifier "tests",
-      "com.twitter" %% "inject-core" % versions.finatra % "test" classifier "tests",
-      "com.twitter" %% "inject-modules" % versions.finatra % "test" classifier "tests",
-      "com.twitter" %% "inject-server" % versions.finatra % "test" classifier "tests"
-    )
-  )
-  .dependsOn(idl)
+  .settings(name := "gatling-thrift")
+  .aggregate(idl, loadtest)
 
 lazy val idl = (project in file("idl"))
   .settings(baseSettings, noPublishSettings)
   .settings(
     name := "thrift-idl",
     moduleName := "thrift-idl",
-    scroogeThriftDependencies in Compile := Seq("finatra-thrift_2.11"),
     libraryDependencies ++= Seq(
       "com.twitter" %% "finatra-thrift" % versions.finatra
     )
