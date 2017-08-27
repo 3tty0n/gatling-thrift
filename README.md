@@ -22,11 +22,15 @@ addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
 ```
 
+``` scala
+enablePlugins(GatlingPlugin)
+```
+
 3. Define sbt settings. Please see [it](https://github.com/3tty0n/gatling-thrift/blob/master/gatling-thrift-example/resources/build.sbt.sample).
 
 4. Add your thrift file in `src/main/thrift` directory
 
-5. Create your simulation in `src/test` directory
+5. Create your simulation in `src/test/scala` directory
 
 ``` scala
 package simulation
@@ -139,7 +143,7 @@ $ gatling-thrift-example/target/scala-2.11/gatling-loadtest-example.jar \
 
 You can publish your simulation as zip by using `sbt-native-packager` and `sbt-assembly`.
 
-1. Add `sbt-native-packager` and `sbt-assembly` plugin
+1. Enable `sbt-native-packager` and `sbt-assembly` plugin
 
 ``` scala
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
@@ -147,9 +151,26 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
 ```
 
+``` scala
+enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
+```
+
 2. Add settings as below
 
 ``` scala
+assemblyMergeStrategy in assembly := {
+  case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
+  case meta(_)                           => MergeStrategy.discard
+  case "BUILD"                           => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
+test in assembly := {}
+
+lazy val meta = """META.INF(.)*""".r
+
 assemblyJarName in assembly := "gatling-thrift-example.jar"
  
 mainClass in assembly := Some("simulation.ThriftSimulationMain")
