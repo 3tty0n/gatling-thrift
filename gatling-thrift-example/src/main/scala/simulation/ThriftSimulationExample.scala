@@ -1,26 +1,31 @@
-package io.gatling.thrift.testrunner
+package simulation
 
 import io.gatling.core.Predef._
-import io.gatling.thrift.Thrift
+import io.gatling.core.action.builder.ActionBuilder
+import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.thrift.Predef._
 import io.gatling.thrift.action.ThriftActionBuilder
 import io.gatling.thrift.client.ThriftClientBuilder
-import io.gatling.thrift.Predef._
+import io.gatling.thrift.testrunner.GatlingRunner
 import org.micchon.ping.thriftscala.PingService
 
 import scala.concurrent.duration._
 import scala.util.Random
 
-class ThriftSimulation extends Thrift[PingService.FutureIface] {
+object ThriftSimulationMain extends GatlingRunner
 
-  val client = ThriftClientBuilder(Address(), Port()).build()
+class ThriftSimulationExample extends ThriftSimulation[PingService.FutureIface] {
+  override val client: PingService.FutureIface =
+    ThriftClientBuilder(Address(), Port()).build()
 
-  val thriftAction = ThriftActionBuilder(
-    "thrift session",
-    client.echo(new Random().nextInt().toString)
-  )
+  override val thriftAction: ActionBuilder =
+    ThriftActionBuilder(
+      "Thrift Action",
+      client.echo(new Random().nextInt().toString)
+    )
 
-  val scn = scenario("Thrift protocol test")
-    .repeat(2) { exec(thriftAction) }
+  override val scn: ScenarioBuilder =
+    scenario("Thrift Scenario").repeat(2)(exec(thriftAction))
 
   setUp(
     scn.inject(
@@ -41,4 +46,5 @@ class ThriftSimulation extends Thrift[PingService.FutureIface] {
     global.responseTime.max.lessThan(1000),
     global.successfulRequests.percent.greaterThan(95)
   )
+
 }

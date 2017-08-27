@@ -12,7 +12,7 @@ lazy val versions = new {
 }
 
 lazy val baseSettings = Seq(
-  version := "1.0.0-SNAPSHOT",
+  version := "0.1.0-SNAPSHOT",
   organization := "com.github.3tty0n",
   scalaVersion := "2.11.11",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
@@ -67,7 +67,7 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
   .settings(baseSettings, assemblySettings)
   .settings(
-    name := "gatling-loadtest",
+    name := "gatling-thrift",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-app" % versions.gatling,
       "io.gatling" % "gatling-test-framework" % versions.gatling,
@@ -75,7 +75,7 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
         exclude ("io.gatling", "gatling-recorder"),
       "com.typesafe.akka" %% "akka-stream" % versions.akka
     ),
-    assemblyJarName in assembly := "gatling-loadtest.jar",
+    assemblyJarName in assembly := "gatling-thrift.jar",
     mainClass in assembly := Some(
       "io.gatling.thrift.testrunner.GatlingRunner"
     ),
@@ -92,3 +92,26 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
     publishLocal := (publishLocal in Universal).value
   )
   .dependsOn(idl)
+
+lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
+  .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
+  .settings(baseSettings, assemblySettings)
+  .settings(
+    name := "gatling-thrift-example",
+    assemblyJarName in assembly := "gatling-thrift-example.jar",
+    mainClass in assembly := Some(
+      "simulation.ThriftSimulationMain"
+    ),
+    mappings in Universal := {
+      val universalMappings = (mappings in Universal).value
+      val fatJar = (assembly in Compile).value
+      val filtered = universalMappings.filter {
+        case (file, name) => !name.endsWith(".jar")
+      }
+      filtered :+ (fatJar -> ("lib/" + fatJar.getName))
+    },
+    scriptClasspath := Seq((assemblyJarName in assembly).value),
+    publish := (publish in Universal).value,
+    publishLocal := (publishLocal in Universal).value
+  )
+  .dependsOn(`gatling-thrift`, idl)
