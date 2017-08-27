@@ -4,7 +4,7 @@ import io.gatling.app.{CliArgumentParser, Gatling}
 import io.gatling.core.Predef.Simulation
 import io.gatling.core.config.GatlingConfiguration
 
-object GatlingRunner {
+trait GatlingRunner {
   def main(args: Array[String]): Unit = {
     val simulationClass = getClass.getClassLoader
       .loadClass(

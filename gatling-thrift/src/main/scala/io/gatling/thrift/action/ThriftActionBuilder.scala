@@ -1,6 +1,5 @@
 package io.gatling.thrift.action
 
-import akka.actor.ActorRef
 import com.twitter.util.{Future, Return, Throw}
 import io.gatling.commons.stats.{KO, OK}
 import io.gatling.core.Predef.{Session, Status}
@@ -41,13 +40,18 @@ class ThriftConnect[A](val statsEngine: StatsEngine,
   }
 }
 
-class ThriftActionBuilder[A](requestName: String, callback: => Future[A])
+class ThriftActionBuilder[A](address: String,
+                             port: Int,
+                             requestName: String,
+                             callback: => Future[A])
     extends ActionBuilder {
 
   private def components(
     protocolComponentsRegistry: ProtocolComponentsRegistry
   ) =
-    protocolComponentsRegistry.components(ThriftProtocol.ThriftProtocolKey)
+    protocolComponentsRegistry.components(
+      new ThriftProtocol(address, port).ThriftProtocolKey
+    )
 
   override def build(ctx: ScenarioContext, next: Action): Action = {
     import ctx._
@@ -59,7 +63,9 @@ class ThriftActionBuilder[A](requestName: String, callback: => Future[A])
 }
 
 object ThriftActionBuilder {
-  def apply[A](requestName: String,
+  def apply[A](address: String,
+               port: Int,
+               requestName: String,
                callback: => Future[A]): ThriftActionBuilder[A] =
-    new ThriftActionBuilder[A](requestName, callback)
+    new ThriftActionBuilder[A](address, port, requestName, callback)
 }
