@@ -110,7 +110,7 @@ You can execute your load test as:
 
   object ThriftSimulationMain extends GatlingRunner
 
-  class ThriftSimulationExample extend ThriftSimulation[YourServce] {
+  class ThriftSimulationExample extends ThriftSimulation[YourServce] {
     ...
   }
   ```
@@ -190,7 +190,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
     filtered :+ (fatJar -> ("lib/" + fatJar.getName))
   }
 
-  scriptClasspath := Seq((assemblyJarName in assembly).value),
+  scriptClasspath := Seq((assemblyJarName in assembly).value)
 
   publish := (publish in Universal).value  // if you want to publish to local repository, add `publishLocal := (publish in Universal).value`
   ```
