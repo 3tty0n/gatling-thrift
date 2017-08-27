@@ -5,10 +5,8 @@ parallelExecution in ThisBuild := false
 lazy val versions = new {
   val finatra = "2.11.0"
   val scalatest = "3.0.0"
-  val specs2 = "2.4.17"
   val gatling = "2.2.1"
   val akka = "2.4.16"
-  val config = "1.3.1"
 }
 
 lazy val baseSettings = Seq(
@@ -16,6 +14,7 @@ lazy val baseSettings = Seq(
   organization := "com.github.3tty0n",
   scalaVersion := "2.11.11",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
+  scalafmtOnCompile := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(
     "-encoding",
@@ -28,8 +27,7 @@ lazy val baseSettings = Seq(
     "-language:postfixOps"
   ),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % versions.scalatest % "test",
-    "com.typesafe" % "config" % versions.config
+    "org.scalatest" %% "scalatest" % versions.scalatest % "test"
   ),
   resolvers += Resolver.sonatypeRepo("releases"),
   fork in run := true
@@ -64,22 +62,7 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
       "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling,
       "com.typesafe.akka" %% "akka-stream" % versions.akka,
       "com.twitter" %% "finatra-thrift" % versions.finatra
-    ),
-    assemblyJarName in assembly := "gatling-thrift.jar",
-    mainClass in assembly := Some(
-      "io.gatling.thrift.testrunner.GatlingRunner"
-    ),
-    mappings in Universal := {
-      val universalMappings = (mappings in Universal).value
-      val fatJar = (assembly in Compile).value
-      val filtered = universalMappings.filter {
-        case (file, name) => !name.endsWith(".jar")
-      }
-      filtered :+ (fatJar -> ("lib/" + fatJar.getName))
-    },
-    scriptClasspath := Seq((assemblyJarName in assembly).value),
-    publish := (publish in Universal).value,
-    publishLocal := (publishLocal in Universal).value
+    )
   )
 
 lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
