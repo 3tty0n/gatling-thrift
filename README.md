@@ -2,34 +2,13 @@
 
 This is a load testing tool for thrift server.
 
-You can execute your load test in sbt console and your command line.
+You can execute your load test as:
+ - sbt
+ - jar (in command line)
 
-## Quick start
+## Execute as sbt
 
-1. Clone this reposiory
-
-```bash
-$ git clone git@github.com:3tty0n/gatling-thrift.git
-```
-
-2. Compile and start the finatra server.
-
-3. Create the fat jar
-
-```bash
-$ sbt gatling-thrift-example/assembly
-```
-
-4. Exectute the load test
-
-``` bash
-$ java -jar gatling-thrift-example/target/scala-2.11/gatling-loadtest-example.jar \
-    --simulation simulation.ThriftSimulationExample
-```
-  
-## Customize your simulation
-
-1. Add `gatling-thrift-dependency`
+1. Add `gatling-thrift` dependency
 
 ```scala
 libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0-SNAPSHOT"
@@ -43,33 +22,34 @@ addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
 ```
 
-4. Add your thrift file in `src/main/thrift` dir
+4. Add your thrift file in `src/main/thrift` directory
 
 5. Create your simulation in `src/test` directory
 
 ``` scala
 package simulation
 
+import com.twitter.finagle.Thrift
 import io.gatling.core.Predef._
 import io.gatling.core.action.builder.ActionBuilder
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.thrift.Predef._
 import io.gatling.thrift.action.ThriftActionBuilder
-import io.gatling.thrift.client.ThriftClientBuilder
+import io.gatling.thrift.testrunner.GatlingRunner
+import org.micchon.ping.thriftscala.PingService
 
-import org.example.thriftscala.YourService
-
-import scala.util.Random
 import scala.concurrent.duration._
+import scala.util.Random
 
-class ThriftSimulationExample extends ThriftSimulation[YourService.FutureIface] {
+class ThriftSimulationExample
+    extends ThriftSimulation[PingService.FutureIface] {
   override val client: PingService.FutureIface =
-    ThriftClientBuilder("localhost", 9911).build()
+    Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
   override val thriftAction: ActionBuilder =
     ThriftActionBuilder(
       "localhost",
-      "9911",
+      9911,
       "Thrift Action",
       client.echo(new Random().nextInt().toString)
     )
@@ -97,8 +77,7 @@ class ThriftSimulationExample extends ThriftSimulation[YourService.FutureIface] 
     global.successfulRequests.percent.greaterThan(95)
   )
 
-}
-```
+}```
 
 6. Execte as below.
 
@@ -117,8 +96,13 @@ $ sbt gatling-thrift-example/gatling:test
 package simulation
 
 import io.gatling.thrift.testrunner.GatlingRunner
+import io.gatling.thrift.Predef._
 
 object ThriftSimulationMain extends GatlingRunner
+
+class ThriftSimulationExample extend ThriftSimulation[YourServce] {
+  ...
+}
 ```
 
 3. Enable sbt assembly
@@ -127,7 +111,7 @@ object ThriftSimulationMain extends GatlingRunner
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
 ```
 
-4. Define sbt assembly settings as below
+4. Define `sbt-assembly` settings as below
 
 ``` scala
 assemblyJarName in assembly := "gatling-thrift-example.jar"
@@ -150,13 +134,44 @@ $ gatling-thrift-example/target/scala-2.11/gatling-loadtest-example.jar \
 
 ## Publish
 
-In this project, `sbt-native-packager` is enabled. So you can publish the fat jar of `gatling-thrift-exampe` module to execute following commands.
+You can publish your simulation as zip by using `sbt-native-packager` and `sbt-assembly`.
 
-``` bash
-$ sbt pubslih # in local, sbt publishLocal
+1. Add `sbt-native-packager` and `sbt-assembly` plugin
+
+``` scala
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
+
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
 ```
 
-If you want to execute the load test packaged by `sbt-native-packager`, execute commands as below.
+2. Add settings as below
+
+``` scala
+assemblyJarName in assembly := "gatling-thrift-example.jar"
+ 
+mainClass in assembly := Some("simulation.ThriftSimulationMain")
+ 
+mappings in Universal := {
+  val universalMappings = (mappings in Universal).value
+  val fatJar = (assembly in Compile).value
+  val filtered = universalMappings.filter {
+    case (file, name) => !name.endsWith(".jar")
+  }
+  filtered :+ (fatJar -> ("lib/" + fatJar.getName))
+}
+
+scriptClasspath := Seq((assemblyJarName in assembly).value),
+
+publish := (publish in Universal).value  // if you want to publish to local repository, add `publishLocal := (publish in Universal).value`
+```
+
+3. Execute publish task
+
+``` bash
+$ sbt gatling-thrift-exampoe/publish # if you want to publish to local repository, execute `sbt gatling-thrift-example/publishLocal`
+```
+
+If you want to execute the load test packaged by sbt-native-packager, execute commands as below.
 
 ``` bash
 $ cd /path/to/gatling-thrift-example/0.1.0-SNAPSHOT/zips
