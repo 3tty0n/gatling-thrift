@@ -1,3 +1,8 @@
+libraryDependencies ++= Seq(
+  com.github.3tty0n" %% "gatling-thrift" % "0.1.0-SNAPSHOT",
+  "io.netty" % "netty-all" % "4.1.15.Final"
+)
+
 assemblyMergeStrategy in assembly := {
   case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
   case meta(_)                           => MergeStrategy.discard
