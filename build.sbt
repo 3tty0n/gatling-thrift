@@ -64,7 +64,7 @@ lazy val idl = (project in file("idl"))
   )
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
-  .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
+  .enablePlugins(JavaAppPackaging, UniversalDeployPlugin)
   .settings(baseSettings, assemblySettings)
   .settings(
     name := "gatling-thrift",
