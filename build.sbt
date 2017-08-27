@@ -7,6 +7,7 @@ lazy val versions = new {
   val scalatest = "3.0.0"
   val gatling = "2.2.1"
   val akka = "2.4.16"
+  val netty = "4.1.15.Final"
 }
 
 lazy val baseSettings = Seq(
@@ -27,14 +28,15 @@ lazy val baseSettings = Seq(
     "-language:postfixOps"
   ),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % versions.scalatest % "test"
+    "org.scalatest" %% "scalatest" % versions.scalatest % "test",
+    "io.netty" % "netty-all" % versions.netty
   ),
   resolvers += Resolver.sonatypeRepo("releases"),
   fork in run := true
 )
 
 lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
-  case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
+  case PathList("io", "netty", xs @ _ *) => MergeStrategy.last
   case meta(_)                           => MergeStrategy.discard
   case "BUILD"                           => MergeStrategy.discard
   case x =>
