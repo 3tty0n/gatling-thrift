@@ -51,17 +51,7 @@ lazy val noPublishSettings = Seq(publish := {}, publishLocal := {})
 lazy val root = (project in file("."))
   .settings(noPublishSettings)
   .settings(name := "gatling-thrift")
-  .aggregate(idl, `gatling-thrift`)
-
-lazy val idl = (project in file("idl"))
-  .settings(baseSettings, noPublishSettings)
-  .settings(
-    name := "thrift-idl",
-    moduleName := "thrift-idl",
-    libraryDependencies ++= Seq(
-      "com.twitter" %% "finatra-thrift" % versions.finatra
-    )
-  )
+  .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .enablePlugins(JavaAppPackaging, UniversalDeployPlugin)
@@ -71,9 +61,9 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-app" % versions.gatling,
       "io.gatling" % "gatling-test-framework" % versions.gatling,
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
-        exclude ("io.gatling", "gatling-recorder"),
-      "com.typesafe.akka" %% "akka-stream" % versions.akka
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling,
+      "com.typesafe.akka" %% "akka-stream" % versions.akka,
+      "com.twitter" %% "finatra-thrift" % versions.finatra
     ),
     assemblyJarName in assembly := "gatling-thrift.jar",
     mainClass in assembly := Some(
@@ -91,7 +81,6 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
     publish := (publish in Universal).value,
     publishLocal := (publishLocal in Universal).value
   )
-  .dependsOn(idl)
 
 lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
   .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
@@ -114,4 +103,4 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
     publish := (publish in Universal).value,
     publishLocal := (publishLocal in Universal).value
   )
-  .dependsOn(`gatling-thrift`, idl)
+  .dependsOn(`gatling-thrift`)
