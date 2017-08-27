@@ -35,15 +35,17 @@ $ java -jar gatling-thrift-example/target/scala-2.11/gatling-loadtest-example.ja
 libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0-SNAPSHOT"
 ```
 
-2. Enable gatling plugin
+2. Enable gatling and scrooge plugin
 
 ```scala
+addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
+
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
 ```
 
-4. Add your thrift file
+4. Add your thrift file in `src/main/thrift` dir
 
-5. Create your simulation in `test` directory
+5. Create your simulation in `src/test` directory
 
 ``` scala
 package simulation
@@ -62,7 +64,7 @@ import scala.concurrent.duration._
 
 class ThriftSimulationExample extends ThriftSimulation[YourService.FutureIface] {
   override val client: PingService.FutureIface =
-    ThriftClientBuilder("localhost", 9911.build()
+    ThriftClientBuilder("localhost", 9911).build()
 
   override val thriftAction: ActionBuilder =
     ThriftActionBuilder(
@@ -102,6 +104,48 @@ class ThriftSimulationExample extends ThriftSimulation[YourService.FutureIface] 
 
 ``` bash
 $ sbt gatling-thrift-example/gatling:test
+```
+
+## Execute as jar
+
+1. Create your simulation
+
+2. Implement Main `object`
+
+
+``` scala
+package simulation
+
+import io.gatling.thrift.testrunner.GatlingRunner
+
+object ThriftSimulationMain extends GatlingRunner
+```
+
+3. Enable sbt assembly
+
+``` scala
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
+```
+
+4. Define sbt assembly settings as below
+
+``` scala
+assemblyJarName in assembly := "gatling-thrift-example.jar"
+
+mainClass in assembly := Some("simulation.ThriftSimulationMain"),
+```
+
+5. Create fat jar
+
+``` bash
+$ sbt gatling-thrift-example/assembly
+```
+
+6. Execute as below
+
+``` bash
+$ gatling-thrift-example/target/scala-2.11/gatling-loadtest-example.jar \
+    --simulation simulation.ThriftSimulationExample
 ```
 
 ## Publish
