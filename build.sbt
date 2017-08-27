@@ -44,16 +44,40 @@ lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
 
 lazy val meta = """META.INF(.)*""".r
 
-lazy val noPublishSettings = Seq(publish := {}, publishLocal := {})
+lazy val publishSettings = Seq(
+    publishMavenStyle := true,
+    publishTo := {
+      val nexus = "https://oss.sonatype.org/"
+      if (isSnapshot.value)
+        Some("snapshots" at nexus + "content/repositories/snapshots")
+      else
+        Some("releases" at nexus + "service/local/staging/deploy/maven2")
+    },
+    publishArtifact in Test := false,
+    pomIncludeRepository := { _ => false },
+    licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
+    pomExtra :=
+      <url>https://github.com/3tty0n/gatling-thrift</url>
+      <developers>
+        <developer>
+          <id>3tty0n</id>
+          <name>Yusuke Izawa</name>
+          <url>https://github.com/3tty0n</url>
+        </developer>
+      </developers>
+      <scm>
+        <url>git@github.com:3tty0n/gatling-thrift.git</url>
+        <connection>scm:git:git@github.com:3tty0n/gatling-thrift.git</connection>
+      </scm>
+  )
 
 lazy val root = (project in file("."))
-  .settings(noPublishSettings)
+  .settings(publishSettings)
   .settings(name := "gatling-thrift")
   .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
-  .enablePlugins(JavaAppPackaging, UniversalDeployPlugin)
-  .settings(baseSettings, assemblySettings)
+  .settings(baseSettings)
   .settings(
     name := "gatling-thrift",
     libraryDependencies ++= Seq(
@@ -83,7 +107,7 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
       filtered :+ (fatJar -> ("lib/" + fatJar.getName))
     },
     scriptClasspath := Seq((assemblyJarName in assembly).value),
-    publish := (publish in Universal).value,
+    publish := {},
     publishLocal := (publishLocal in Universal).value
   )
   .dependsOn(`gatling-thrift`)
