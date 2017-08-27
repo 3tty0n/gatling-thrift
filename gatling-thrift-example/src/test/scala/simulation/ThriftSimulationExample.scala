@@ -11,7 +11,8 @@ import org.micchon.ping.thriftscala.PingService
 import scala.util.Random
 import scala.concurrent.duration._
 
-class ThriftSimulationExample extends ThriftSimulation[PingService.FutureIface] {
+class ThriftSimulationExample
+    extends ThriftSimulation[PingService.FutureIface] {
   val address = "localhost"
 
   val port = 9911
