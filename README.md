@@ -62,10 +62,12 @@ import scala.concurrent.duration._
 
 class ThriftSimulationExample extends ThriftSimulation[YourService.FutureIface] {
   override val client: PingService.FutureIface =
-    ThriftClientBuilder(Address(), Port()).build()
+    ThriftClientBuilder("localhost", 9911.build()
 
   override val thriftAction: ActionBuilder =
     ThriftActionBuilder(
+      "localhost",
+      "9911",
       "Thrift Action",
       client.echo(new Random().nextInt().toString)
     )
