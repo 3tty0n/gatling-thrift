@@ -6,8 +6,6 @@ You can execute your load test in sbt console and your command line.
 
 ## Quick start
 
-### For Example
-
 1. Clone this reposiory
 
 ```bash
