@@ -22,6 +22,8 @@ addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
 ```
 
+3. Define sbt settings. Please see [it](https://github.com/3tty0n/gatling-thrift/blob/master/gatling-thrift-example/resources/build.sbt.sample).
+
 4. Add your thrift file in `src/main/thrift` directory
 
 5. Create your simulation in `src/test` directory
