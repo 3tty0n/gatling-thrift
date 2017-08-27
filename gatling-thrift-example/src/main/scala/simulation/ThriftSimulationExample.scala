@@ -1,11 +1,11 @@
 package simulation
 
+import com.twitter.finagle.Thrift
 import io.gatling.core.Predef._
 import io.gatling.core.action.builder.ActionBuilder
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.thrift.Predef._
 import io.gatling.thrift.action.ThriftActionBuilder
-import io.gatling.thrift.client.ThriftClientBuilder
 import io.gatling.thrift.testrunner.GatlingRunner
 import org.micchon.ping.thriftscala.PingService
 
@@ -14,12 +14,15 @@ import scala.util.Random
 
 object ThriftSimulationMain extends GatlingRunner
 
-class ThriftSimulationExample extends ThriftSimulation[PingService.FutureIface] {
+class ThriftSimulationExample
+    extends ThriftSimulation[PingService.FutureIface] {
   override val client: PingService.FutureIface =
-    ThriftClientBuilder(Address(), Port()).build()
+    Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
   override val thriftAction: ActionBuilder =
     ThriftActionBuilder(
+      "localhost",
+      9911,
       "Thrift Action",
       client.echo(new Random().nextInt().toString)
     )
