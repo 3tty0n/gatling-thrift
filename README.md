@@ -3,8 +3,8 @@
 This is a load testing tool for thrift server.
 
 You can execute your load test as:
- - sbt
- - jar (in command line)
+ - **sbt**
+ - **jar** (in command line)
 
 ## Execute as sbt
 
@@ -77,7 +77,8 @@ class ThriftSimulationExample
     global.successfulRequests.percent.greaterThan(95)
   )
 
-}```
+}
+```
 
 6. Execte as below.
 
