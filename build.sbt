@@ -48,7 +48,7 @@ lazy val meta = """META.INF(.)*""".r
 
 lazy val publishSettings = Seq(
     publishMavenStyle := true,
-    publishTo := {
+    publishTo in ThisBuild := {
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value)
         Some("snapshots" at nexus + "content/repositories/snapshots")
@@ -75,7 +75,12 @@ lazy val publishSettings = Seq(
 
 lazy val root = (project in file("."))
   .settings(publishSettings)
-  .settings(name := "gatling-thrift")
+  .settings(
+    name := "gatling-thrift",
+    publish := Def.sequential(
+      publish in `gatling-thrift`
+    ).value
+  )
   .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
