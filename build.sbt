@@ -11,7 +11,7 @@ lazy val versions = new {
 }
 
 lazy val baseSettings = Seq(
-  version := "0.1.0-SNAPSHOT",
+  version := "0.1.0",
   organization := "com.github.3tty0n",
   scalaVersion := "2.11.11",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
@@ -47,19 +47,23 @@ lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
 lazy val meta = """META.INF(.)*""".r
 
 lazy val publishSettings = Seq(
-    publishMavenStyle := true,
-    publishTo in ThisBuild := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-    publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-    licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
-    pomExtra :=
-      <url>https://github.com/3tty0n/gatling-thrift</url>
+  publishMavenStyle := true,
+  publishTo in ThisBuild := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  },
+  publishArtifact in Test := false,
+  pomIncludeRepository := { _ =>
+    false
+  },
+  licenses := Seq(
+    "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
+  ),
+  pomExtra :=
+    <url>https://github.com/3tty0n/gatling-thrift</url>
       <developers>
         <developer>
           <id>3tty0n</id>
@@ -71,20 +75,18 @@ lazy val publishSettings = Seq(
         <url>git@github.com:3tty0n/gatling-thrift.git</url>
         <connection>scm:git:git@github.com:3tty0n/gatling-thrift.git</connection>
       </scm>
-  )
+)
 
 lazy val root = (project in file("."))
-  .settings(publishSettings)
+  .settings(baseSettings, publishSettings)
   .settings(
     name := "gatling-thrift",
-    publish := Def.sequential(
-      publish in `gatling-thrift`
-    ).value
+    publish := Def.sequential(publish in `gatling-thrift`).value
   )
   .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
-  .settings(baseSettings)
+  .settings(baseSettings, publishSettings)
   .settings(
     name := "gatling-thrift",
     libraryDependencies ++= Seq(
@@ -102,9 +104,7 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
   .settings(
     name := "gatling-thrift-example",
     assemblyJarName in assembly := "gatling-thrift-example.jar",
-    mainClass in assembly := Some(
-      "simulation.ThriftSimulationMain"
-    ),
+    mainClass in assembly := Some("simulation.ThriftSimulationMain"),
     mappings in Universal := {
       val universalMappings = (mappings in Universal).value
       val fatJar = (assembly in Compile).value

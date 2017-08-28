@@ -10,9 +10,7 @@ You can execute your load test as:
 
 1. In `build.sbt`, add:
    ```scala
-   resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-
-   libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0-SNAPSHOT"
+   libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
    ```
 
 1. In `project/plugins.sbt`, add:
