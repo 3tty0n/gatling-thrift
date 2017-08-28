@@ -99,7 +99,7 @@ You can execute your load test as:
 
 ## Execute as jar
 
-1. Implement Main `object`
+1. Implement Main `object` in `src/main/scala`
 
     ``` scala
     package simulation
@@ -137,7 +137,7 @@ You can execute your load test as:
 5. Execute as below
 
     ``` bash
-    $ gatling-thrift-example/target/scala-2.11/gatling-loadtest-example.jar \
+    $ gatling-thrift-example/target/scala-2.11/gatling-thrift-example.jar \
         --simulation simulation.ThriftSimulationExample
     ```
 
