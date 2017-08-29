@@ -1,0 +1,11 @@
+language: scala
+jdk: oraclejdk8
+sudo: false
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+scala:
+  - 2.11.11
+script:
+  - sbt ";compile;test:compile;test"
