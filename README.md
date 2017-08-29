@@ -1,5 +1,9 @@
 # gatling-thrift
 
+[![Build Status](https://travis-ci.org/3tty0n/gatling-thrift.svg?branch=master)](https://travis-ci.org/3tty0n/gatling-thrift)
+ [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.3tty0n/gatling-thrift_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.3tty0n/gatling-thrift_2.11)
+
+
 This is a load testing tool for thrift server.
 
 You can execute your load test as:
@@ -153,7 +157,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
         ```
 
     1. In `build.sbt`, add:
-  
+
           ```scala
           enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
           ```
