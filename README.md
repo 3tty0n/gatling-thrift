@@ -139,7 +139,7 @@ You can execute your load test as:
 5. Execute as below
 
     ``` bash
-    $ gatling-thrift-example/target/scala-2.11/gatling-thrift-example.jar \
+    $ java -jar gatling-thrift-example/target/scala-2.11/gatling-thrift-example.jar \
         --simulation simulation.ThriftSimulationExample
     ```
 
