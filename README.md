@@ -14,6 +14,7 @@ You can execute your load test as:
 
 1. In `build.sbt`, add:
    ```scala
+   scalaVersion := "2.11.11"
    libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
    ```
 
@@ -21,7 +22,6 @@ You can execute your load test as:
 
     ```scala
     addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
-
     addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
     ```
 
@@ -152,7 +152,6 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 
         ```scala
         addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
-
         addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
         ```
 
