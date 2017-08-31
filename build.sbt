@@ -11,7 +11,6 @@ lazy val versions = new {
 }
 
 lazy val baseSettings = Seq(
-  version in ThisBuild := "0.1.1-SNAPSHOT",
   organization := "com.github.3tty0n",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
   scalafmtOnCompile := true,
