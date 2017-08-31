@@ -10,8 +10,7 @@ import com.typesafe.sbt.packager.Keys.scriptClasspath
 object GatlingThriftPlugin extends AutoPlugin {
 
   object autoImport {
-    val gatlingThriftScalaVersion =
-      settingKey[String]("scala version for gatling-thrift")
+    val gatlingThriftScalaVersion = "2.11.11"
     val gatlingThriftUniversalPackagerSettings =
       settingKey[Seq[Def.Setting[_]]](
         "sbt-native-packager settings for gatling-thrift"
@@ -23,7 +22,6 @@ object GatlingThriftPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    gatlingThriftScalaVersion := "2.11.11",
     gatlingThriftUniversalPackagerSettings := Seq(
       assemblyMergeStrategy in assembly := {
         case PathList("io", "netty", xs @ _ *) => MergeStrategy.first

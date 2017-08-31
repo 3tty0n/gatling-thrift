@@ -1,1 +1,1 @@
-scalaVersion := gatlingThriftScalaVersion.value
+scalaVersion := gatlingThriftScalaVersion
