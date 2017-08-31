@@ -78,7 +78,9 @@ lazy val root = (project in file("."))
   .settings(baseSettings, publishSettings)
   .settings(
     name := "gatling-thrift",
-    publish := Def.sequential(publish in `gatling-thrift`).value
+    publish := Def
+      .sequential(publish in `gatling-thrift`, publish in `sbt-gatling-thrift`)
+      .value
   )
   .aggregate(`gatling-thrift`, `sbt-gatling-thrift`)
 
