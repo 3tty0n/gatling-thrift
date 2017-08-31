@@ -11,3 +11,5 @@ addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.10")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
+
+libraryDependencies += { "org.scala-sbt" % "scripted-plugin" % sbtVersion.value }
