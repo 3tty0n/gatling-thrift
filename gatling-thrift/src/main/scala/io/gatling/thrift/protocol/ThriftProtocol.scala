@@ -16,7 +16,9 @@ class ThriftProtocol(address: String, port: Int) {
       classOf[ThriftProtocol]
         .asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
 
-    override def defaultProtocolValue(configuration: GatlingConfiguration) =
+    override def defaultProtocolValue(
+      configuration: GatlingConfiguration
+    ): Protocol =
       new ThriftProtocol(address, port)
 
     override def newComponents(
