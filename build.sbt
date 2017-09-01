@@ -5,8 +5,6 @@ parallelExecution in ThisBuild := false
 lazy val versions = new {
   val finatra = "2.12.0"
   val scalatest = "3.0.3"
-  val akka = "2.4.16"
-  val netty = "4.1.15.Final"
   val jackson = "2.9.0"
   val gatling = "2.3.0"
 }
@@ -27,11 +25,11 @@ lazy val baseSettings = Seq(
     "-language:postfixOps"
   ),
   libraryDependencies ++= Seq(
-    "com.twitter" %% "finatra-thrift" % versions.finatra,
-    "com.typesafe.akka" %% "akka-stream" % versions.akka,
+    "com.twitter" %% "finatra-thrift" % versions.finatra excludeAll (
+      ExclusionRule(organization = "com.fasterxml.jackson.module")
+    ),
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versions.jackson,
-    "org.scalatest" %% "scalatest" % versions.scalatest % "test",
-    "io.netty" % "netty-all" % versions.netty
+    "org.scalatest" %% "scalatest" % versions.scalatest % "test"
   ),
   resolvers += Resolver.sonatypeRepo("releases")
 )
