@@ -6,6 +6,7 @@ cache:
     - $HOME/.ivy2/cache
     - $HOME/.sbt
 scala:
-  - 2.11.11
+  - 2.12.3
 script:
-  - sbt ";compile;test:compile;test"
+  - sbt compile test:compile test
+  - sbt gatling-thrift-example/gatling:test
