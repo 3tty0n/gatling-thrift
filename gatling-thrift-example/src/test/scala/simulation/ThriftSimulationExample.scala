@@ -31,24 +31,5 @@ class ThriftSimulationExample
   override val scn: ScenarioBuilder =
     scenario("Thrift Scenario").repeat(2)(exec(thriftAction))
 
-  setUp(
-    scn.inject(
-      nothingFor(4 seconds),
-      atOnceUsers(10),
-      rampUsers(10) over (5 seconds),
-      constantUsersPerSec(20) during (15 seconds),
-      constantUsersPerSec(20) during (15 seconds) randomized,
-      rampUsersPerSec(10) to 20 during (3 seconds),
-      rampUsersPerSec(10) to 20 during (2 seconds) randomized,
-      splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy (10 seconds),
-      splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy atOnceUsers(
-        30
-      ),
-      heavisideUsers(50) over (20 seconds)
-    )
-  ).assertions(
-    global.responseTime.max.lessThan(1000),
-    global.successfulRequests.percent.greaterThan(95)
-  )
-
+  setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 }

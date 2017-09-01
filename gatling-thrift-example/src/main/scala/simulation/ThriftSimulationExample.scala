@@ -45,9 +45,6 @@ class ThriftSimulationExample
       ),
       heavisideUsers(50) over (20 seconds)
     )
-  ).assertions(
-    global.responseTime.max.lessThan(1000),
-    global.successfulRequests.percent.greaterThan(95)
   )
 
 }

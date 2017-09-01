@@ -8,8 +8,6 @@ import io.gatling.core.session.Session
 
 class ThriftProtocol(address: String, port: Int) {
 
-  type Components = ThriftComponents
-
   val ThriftProtocolKey = new ProtocolKey {
     override type Protocol = ThriftProtocol
     override type Components = ThriftComponents
@@ -18,7 +16,9 @@ class ThriftProtocol(address: String, port: Int) {
       classOf[ThriftProtocol]
         .asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
 
-    override def defaultValue(configuration: GatlingConfiguration) =
+    override def defaultProtocolValue(
+      configuration: GatlingConfiguration
+    ): Protocol =
       new ThriftProtocol(address, port)
 
     override def newComponents(
@@ -28,6 +28,12 @@ class ThriftProtocol(address: String, port: Int) {
       ThriftComponents(thriftProtocol)
     }
   }
+}
+
+object ThriftProtocol {
+
+  def apply(address: String, port: Int): ThriftProtocol =
+    new ThriftProtocol(address, port)
 }
 
 case class ThriftComponents(thriftProtocol: ThriftProtocol)

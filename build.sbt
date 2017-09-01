@@ -3,24 +3,21 @@ import sbt.Keys._
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
-  val finatra = "2.11.0"
-  val scalatest = "3.0.0"
-  val gatling = "2.2.1"
-  val akka = "2.4.16"
-  val netty = "4.1.15.Final"
+  val finatra = "2.12.0"
+  val scalatest = "3.0.3"
+  val jackson = "2.9.0"
+  val gatling = "2.3.0"
 }
 
 lazy val baseSettings = Seq(
-  version := "0.1.1-SNAPSHOT",
   organization := "com.github.3tty0n",
-  scalaVersion := "2.11.11",
+  scalaVersion := "2.12.3",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
   scalafmtOnCompile := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(
     "-encoding",
     "UTF-8",
-    "-target:jvm-1.8",
     "-deprecation",
     "-feature",
     "-unchecked",
@@ -28,23 +25,38 @@ lazy val baseSettings = Seq(
     "-language:postfixOps"
   ),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % versions.scalatest % "test",
-    "io.netty" % "netty-all" % versions.netty
+    "com.twitter" %% "finatra-thrift" % versions.finatra excludeAll (
+      ExclusionRule(organization = "com.fasterxml.jackson.module")
+    ),
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % versions.jackson,
+    "org.scalatest" %% "scalatest" % versions.scalatest % "test"
   ),
-  resolvers += Resolver.sonatypeRepo("releases"),
-  fork in run := true
+  resolvers += Resolver.sonatypeRepo("releases")
 )
 
-lazy val assemblySettings = Seq(assemblyMergeStrategy in assembly := {
-  case PathList("io", "netty", xs @ _ *) => MergeStrategy.last
-  case meta(_)                           => MergeStrategy.discard
-  case "BUILD"                           => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (assemblyMergeStrategy in assembly).value
-    oldStrategy(x)
-}, test in assembly := {})
-
-lazy val meta = """META.INF(.)*""".r
+lazy val assemblySettings = {
+  val meta = """META.INF(.)*""".r
+  Seq(
+    assemblyMergeStrategy in assembly := {
+      case PathList("io", "netty", xs @ _ *) =>
+        MergeStrategy.last
+      case PathList(
+          "com.fasterxml.jackson.module",
+          "jackson-module-scala",
+          xs @ _ *
+          ) =>
+        MergeStrategy.last
+      case meta(_) =>
+        MergeStrategy.discard
+      case "BUILD" =>
+        MergeStrategy.discard
+      case x =>
+        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        oldStrategy(x)
+    },
+    test in assembly := {}
+  )
+}
 
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
@@ -83,7 +95,7 @@ lazy val root = (project in file("."))
     name := "gatling-thrift",
     publish := Def.sequential(publish in `gatling-thrift`).value
   )
-  .aggregate(`gatling-thrift`)
+  .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .settings(baseSettings, publishSettings)
@@ -92,9 +104,7 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-app" % versions.gatling,
       "io.gatling" % "gatling-test-framework" % versions.gatling,
-      "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling,
-      "com.typesafe.akka" %% "akka-stream" % versions.akka,
-      "com.twitter" %% "finatra-thrift" % versions.finatra
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
     )
   )
 

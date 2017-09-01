@@ -12,17 +12,24 @@ You can execute your load test as:
 
 ## Set up
 
+Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of development of gatling-thrift is 2.12.3.
+
 1. In `build.sbt`, add:
-   ```scala
-   scalaVersion := "2.11.11"
-   libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
-   ```
+    1. If you use Scala 2.12.x:
+       ```scala
+       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.2.0"
+       ```
+      
+    1. If you use Scala 2.11.x:
+       ```scala
+       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
+       ```
 
 1. In `project/plugins.sbt`, add:
 
     ```scala
     addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
-    addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.1")
+    addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.2")
     ```
 
 1. And enable GatlingPlugin.
@@ -85,9 +92,6 @@ You can execute your load test as:
           ),
           heavisideUsers(50) over (20 seconds)
         )
-      ).assertions(
-        global.responseTime.max.lessThan(1000),
-        global.successfulRequests.percent.greaterThan(95)
       )
 
     }
@@ -206,7 +210,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
     ```bash
     $ cd /path/to/gatling-thrift-example/0.1.0-SNAPSHOT/zips
     $ unzip gatling-laodtest.zip
-    $ cd gatling-loadtest-1.0.0-SNAPSHOT
+    $ cd gatling-loadtest-0.1.0-SNAPSHOT
     $ bin/gatling-thrift-example -s simulation.ThriftSimulationExample
     ```
 
