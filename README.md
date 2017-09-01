@@ -4,7 +4,7 @@
  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.3tty0n/gatling-thrift_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.3tty0n/gatling-thrift_2.11)
 
 
-This is a load testing tool for thrift server.
+This is a [Gatling](http://gatling.io/) third party Thrift plugin for [Finatra Thrift Server](https://twitter.github.io/finatra/user-guide/thrift/server.html).
 
 You can execute your load test as:
  - **sbt**
@@ -15,12 +15,12 @@ You can execute your load test as:
 Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of development of gatling-thrift is 2.12.3.
 
 1. In `build.sbt`, add:
-    1. If you use Scala 2.12.x:
+    1. If you use Scala 2.12.x and Gatling 2.3.x:
        ```scala
        libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.2.0"
        ```
       
-    1. If you use Scala 2.11.x:
+    1. If you use Scala 2.11.x and Gatling 2.2.x:
        ```scala
        libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
        ```
