@@ -11,13 +11,16 @@ lazy val versions = new {
 }
 
 lazy val baseSettings = Seq(
+  version := "0.1.1-SNAPSHOT",
   organization := "com.github.3tty0n",
+  scalaVersion := "2.11.11",
   scalafmtVersion in ThisBuild := "1.0.0-RC2",
   scalafmtOnCompile := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(
     "-encoding",
     "UTF-8",
+    "-target:jvm-1.8",
     "-deprecation",
     "-feature",
     "-unchecked",
@@ -78,17 +81,14 @@ lazy val root = (project in file("."))
   .settings(baseSettings, publishSettings)
   .settings(
     name := "gatling-thrift",
-    publish := Def
-      .sequential(publish in `gatling-thrift`, publish in `sbt-gatling-thrift`)
-      .value
+    publish := Def.sequential(publish in `gatling-thrift`).value
   )
-  .aggregate(`gatling-thrift`, `sbt-gatling-thrift`)
+  .aggregate(`gatling-thrift`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .settings(baseSettings, publishSettings)
   .settings(
     name := "gatling-thrift",
-    scalaVersion := "2.11.11",
     libraryDependencies ++= Seq(
       "io.gatling" % "gatling-app" % versions.gatling,
       "io.gatling" % "gatling-test-framework" % versions.gatling,
@@ -103,7 +103,6 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
   .settings(baseSettings, assemblySettings)
   .settings(
     name := "gatling-thrift-example",
-    scalaVersion := "2.11.11",
     assemblyJarName in assembly := "gatling-thrift-example.jar",
     mainClass in assembly := Some("simulation.ThriftSimulationMain"),
     mappings in Universal := {
@@ -119,12 +118,3 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
     publishLocal := (publishLocal in Universal).value
   )
   .dependsOn(`gatling-thrift`)
-
-lazy val `sbt-gatling-thrift` = (project in file("sbt-gatling-thrift"))
-  .settings(baseSettings, publishSettings)
-  .settings(name := "sbt-gatling-thrift", sbtPlugin := true)
-  .settings(ScriptedPlugin.scriptedSettings)
-  .settings(scriptedLaunchOpts := {
-    scriptedLaunchOpts.value ++
-      Seq("-Dplugin.version=" + version.value)
-  }, scriptedBufferLog := false)

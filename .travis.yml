@@ -8,5 +8,4 @@ cache:
 scala:
   - 2.11.11
 script:
-  - sbt compile test:compile test
-  - sbt sbt-gatling-thrift/scripted
+  - sbt ";compile;test:compile;test"
