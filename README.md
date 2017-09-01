@@ -12,12 +12,18 @@ You can execute your load test as:
 
 ## Set up
 
-1. In `build.sbt`, add:
-   ```scala
-   scalaVersion := "2.12.3"
+Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of development of gatling-thrift is 2.12.3.
 
-   libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
-   ```
+1. In `build.sbt`, add:
+    1. If you use Scala 2.12.x:
+       ```scala
+       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.2.0"
+       ```
+      
+    1. If you use Scala 2.11.x:
+       ```scala
+       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
+       ```
 
 1. In `project/plugins.sbt`, add:
 
@@ -86,9 +92,6 @@ You can execute your load test as:
           ),
           heavisideUsers(50) over (20 seconds)
         )
-      ).assertions(
-        global.responseTime.max.lessThan(1000),
-        global.successfulRequests.percent.greaterThan(95)
       )
 
     }
