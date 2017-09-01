@@ -4,6 +4,7 @@ parallelExecution in ThisBuild := false
 
 lazy val versions = new {
   val finatra = "2.12.0"
+  val logback = "1.1.7"
   val scalatest = "3.0.3"
   val jackson = "2.9.0"
   val gatling = "2.3.0"
@@ -28,6 +29,7 @@ lazy val baseSettings = Seq(
     "com.twitter" %% "finatra-thrift" % versions.finatra excludeAll (
       ExclusionRule(organization = "com.fasterxml.jackson.module")
     ),
+    "ch.qos.logback" % "logback-classic" % versions.logback,
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versions.jackson,
     "org.scalatest" %% "scalatest" % versions.scalatest % "test"
   ),
