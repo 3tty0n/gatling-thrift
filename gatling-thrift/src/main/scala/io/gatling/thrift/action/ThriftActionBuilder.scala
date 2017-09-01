@@ -33,7 +33,14 @@ class ThriftConnect[A](val statsEngine: StatsEngine,
         val end = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
         logger.error(s"An error is occurred: ${e.getMessage}", e)
-        statsEngine.logResponse(session, requestName, timings, KO, None, None)
+        statsEngine.logResponse(
+          session,
+          requestName,
+          timings,
+          KO,
+          None,
+          Some(e.getMessage)
+        )
         next ! session
     }
 
