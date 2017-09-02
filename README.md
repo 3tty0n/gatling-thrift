@@ -143,7 +143,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 5. Execute as below
 
     ``` bash
-    $ java -jar gatling-thrift-example/target/scala-2.11/gatling-thrift-example.jar \
+    $ java -jar gatling-thrift-example/target/scala-2.12/gatling-thrift-example.jar \
         --simulation simulation.ThriftSimulationExample
     ```
 
