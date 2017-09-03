@@ -25,7 +25,7 @@ class ThriftSimulationExample extends ThriftSimulation {
     client.echo(new Random().nextInt().toString)
 
   val scn: ScenarioBuilder = scenario("Thrift Scenario").repeat(2) {
-    exec(ThriftActionBuilder(callback))
+    exec(callback)
   }
 
   setUp(
