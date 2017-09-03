@@ -110,7 +110,7 @@ val scn = senario("Thrift Scenario").repeqt(100) {
 
     object ThriftSimulationMain extends GatlingRunner
 
-    class ThriftSimulationExample extends ThriftSimulation[YourServce] {
+    class ThriftSimulationExample extends ThriftSimulation {
       ...
     }
     ```
