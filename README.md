@@ -17,7 +17,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 1. In `build.sbt`, add:
     1. If you use Scala 2.12.x and Gatling 2.3.x:
        ```scala
-       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.3.0"
+       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.3.1"
        ```
       
     1. If you use Scala 2.11.x and Gatling 2.2.x:
@@ -42,9 +42,14 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 ## Usage
 
 ```scala
+import io.gatling.thrift.Predef._
+
 val client = Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
-implicit val connection = Connection("localhost", 9911)
+implicit val thriftProtocol: ThriftProtocol = thrift.
+  port(9911).
+  host("localhost").
+  requestName("example request")
 
 implicit val callback: Future[String] = client.echo(new Random().nextInt().toString)
 
@@ -66,31 +71,10 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
     ```scala
     package simulation
     
-    import com.twitter.finagle.Thrift
-    import com.twitter.util.Future
-    import io.gatling.core.Predef._
-    import io.gatling.core.structure.ScenarioBuilder
     import io.gatling.thrift.Predef._
-    import io.gatling.thrift.data.Connection
-    import org.micchon.ping.thriftscala.PingService
-    
-    import scala.util.Random
-    import scala.concurrent.duration._
     
     class ThriftSimulationExample extends ThriftSimulation {
-      val client: PingService.FutureIface =
-        Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
-    
-      implicit val connection = Connection("localhost", 9911)
-    
-      implicit val callback: Future[String] =
-        client.echo(new Random().nextInt().toString)
-    
-      val scn: ScenarioBuilder = scenario("Thrift Scenario").repeat(2) {
-        exec(callback)
-      }
-    
-      setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
+      ...
     }
     ```
 
