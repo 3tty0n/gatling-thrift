@@ -41,7 +41,7 @@ lazy val assemblySettings = {
   Seq(
     assemblyMergeStrategy in assembly := {
       case PathList("io", "netty", xs @ _ *) =>
-        MergeStrategy.last
+        MergeStrategy.first
       case meta(_) =>
         MergeStrategy.discard
       case "BUILD" =>
