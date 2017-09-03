@@ -27,6 +27,10 @@ class ThriftProtocol(connection: Connection) {
       ThriftComponents(thriftProtocol)
     }
   }
+
+  def requestName: String = connection.requestName
+  def port: Int = connection.port
+  def host: String = connection.host
 }
 
 object ThriftProtocol {
