@@ -19,7 +19,7 @@ class ThriftSimulationExample extends ThriftSimulation {
     client.echo(new Random().nextInt().toString)
 
   implicit val thriftProtocol: ThriftProtocol =
-    thrift.port(9991).host("localhost").requestName("example request")
+    thrift.port(9911).host("localhost").requestName("example request")
 
   val scn: ScenarioBuilder = scenario("Thrift Scenario").repeat(2) {
     exec(callback)

@@ -1,7 +1,7 @@
 package io.gatling.thrift.data
 
 case class Connection(host: String = "localhost",
-                      port: Int = 9912,
+                      port: Int = 9911,
                       requestName: String = "Thrift Action") {
 
   def validate(): Unit = {
