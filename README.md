@@ -34,9 +34,23 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 
 1. And enable GatlingPlugin.
 
-    ``` scala
+    ```scala
     enablePlugins(GatlingPlugin)
     ```
+    
+## Usage
+
+```scala
+val client = Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
+
+implicit val connection = Connection("localhost", 9911)
+
+implicit val callback: Future[String] = client.echo(new Random().nextInt().toString)
+
+val scn = senario("Thrift Scenario").repeqt(100) {
+  exec(callback)
+}
+```
 
 ## Execute as sbt
 
@@ -46,54 +60,34 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 
 1. Create your simulation in `src/test/scala` directory
 
-    ``` scala
+    ```scala
     package simulation
-
+    
     import com.twitter.finagle.Thrift
+    import com.twitter.util.Future
     import io.gatling.core.Predef._
-    import io.gatling.core.action.builder.ActionBuilder
     import io.gatling.core.structure.ScenarioBuilder
     import io.gatling.thrift.Predef._
-    import io.gatling.thrift.action.ThriftActionBuilder
-    import io.gatling.thrift.testrunner.GatlingRunner
+    import io.gatling.thrift.data.Connection
     import org.micchon.ping.thriftscala.PingService
-
-    import scala.concurrent.duration._
+    
     import scala.util.Random
-
-    class ThriftSimulationExample
-        extends ThriftSimulation[PingService.FutureIface] {
-      override val client: PingService.FutureIface =
+    import scala.concurrent.duration._
+    
+    class ThriftSimulationExample extends ThriftSimulation {
+      val client: PingService.FutureIface =
         Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
-
-      override val thriftAction: ActionBuilder =
-        ThriftActionBuilder(
-          "localhost",
-          9911,
-          "Thrift Action",
-          client.echo(new Random().nextInt().toString)
-        )
-
-      override val scn: ScenarioBuilder =
-        scenario("Thrift Scenario").repeat(2)(exec(thriftAction))
-
-      setUp(
-        scn.inject(
-          nothingFor(4 seconds),
-          atOnceUsers(10),
-          rampUsers(10) over (5 seconds),
-          constantUsersPerSec(20) during (15 seconds),
-          constantUsersPerSec(20) during (15 seconds) randomized,
-          rampUsersPerSec(10) to 20 during (3 seconds),
-          rampUsersPerSec(10) to 20 during (2 seconds) randomized,
-          splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy (10 seconds),
-          splitUsers(20) into (rampUsers(10) over (10 seconds)) separatedBy atOnceUsers(
-            30
-          ),
-          heavisideUsers(50) over (20 seconds)
-        )
-      )
-
+    
+      implicit val connection = Connection("localhost", 9911)
+    
+      implicit val callback: Future[String] =
+        client.echo(new Random().nextInt().toString)
+    
+      val scn: ScenarioBuilder = scenario("Thrift Scenario").repeat(2) {
+        exec(callback)
+      }
+    
+      setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
     }
     ```
 
@@ -107,7 +101,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 
 1. Implement Main `object` in `src/main/scala`
 
-    ``` scala
+    ```scala
     package simulation
 
     import io.gatling.thrift.testrunner.GatlingRunner
@@ -122,13 +116,13 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 
 2. Enable sbt assembly
 
-    ``` scala
+    ```scala
     addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
     ```
 
 3. Define `sbt-assembly` settings as below
 
-    ``` scala
+    ```scala
     assemblyJarName in assembly := "gatling-thrift-example.jar"
 
     mainClass in assembly := Some("simulation.ThriftSimulationMain"),
@@ -136,13 +130,13 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 
 4. Create fat jar
 
-    ``` bash
+    ```bash
     $ sbt gatling-thrift-example/assembly
     ```
 
 5. Execute as below
 
-    ``` bash
+    ```bash
     $ java -jar gatling-thrift-example/target/scala-2.12/gatling-thrift-example.jar \
         --simulation simulation.ThriftSimulationExample
     ```
@@ -167,7 +161,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 
 1. Add settings as below
 
-    ``` scala
+    ```scala
     assemblyMergeStrategy in assembly := {
       case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
       case meta(_)                           => MergeStrategy.discard

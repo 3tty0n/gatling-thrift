@@ -1,11 +1,12 @@
 package simulation
 
 import com.twitter.finagle.Thrift
+import com.twitter.util.Future
 import io.gatling.core.Predef._
-import io.gatling.core.action.builder.ActionBuilder
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.thrift.Predef._
 import io.gatling.thrift.action.ThriftActionBuilder
+import io.gatling.thrift.data.Connection
 import io.gatling.thrift.testrunner.GatlingRunner
 import org.micchon.ping.thriftscala.PingService
 
@@ -14,21 +15,18 @@ import scala.util.Random
 
 object ThriftSimulationMain extends GatlingRunner
 
-class ThriftSimulationExample
-    extends ThriftSimulation[PingService.FutureIface] {
-  override val client: PingService.FutureIface =
+class ThriftSimulationExample extends ThriftSimulation {
+  val client: PingService.FutureIface =
     Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
-  override val thriftAction: ActionBuilder =
-    ThriftActionBuilder(
-      "localhost",
-      9911,
-      "Thrift Action",
-      client.echo(new Random().nextInt().toString)
-    )
+  implicit val connection = Connection("localhost", 9911)
 
-  override val scn: ScenarioBuilder =
-    scenario("Thrift Scenario").repeat(2)(exec(thriftAction))
+  implicit val callback: Future[String] =
+    client.echo(new Random().nextInt().toString)
+
+  val scn: ScenarioBuilder = scenario("Thrift Scenario").repeat(2) {
+    exec(ThriftActionBuilder(callback))
+  }
 
   setUp(
     scn.inject(
