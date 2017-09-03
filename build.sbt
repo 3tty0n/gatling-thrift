@@ -42,12 +42,6 @@ lazy val assemblySettings = {
     assemblyMergeStrategy in assembly := {
       case PathList("io", "netty", xs @ _ *) =>
         MergeStrategy.last
-      case PathList(
-          "com.fasterxml.jackson.module",
-          "jackson-module-scala",
-          xs @ _ *
-          ) =>
-        MergeStrategy.last
       case meta(_) =>
         MergeStrategy.discard
       case "BUILD" =>
