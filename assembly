@@ -1,2 +1,5 @@
 #!/bin/bash
 sbt gatling-thrift-example/assembly
+
+ java -jar gatling-thrift-example/target/scala-2.12/gatling-thrift-example.jar \
+    --simulation simulation.ThriftSimulationExample
