@@ -51,6 +51,8 @@ implicit val callback: Future[String] = client.echo(new Random().nextInt().toStr
 val scn = senario("Thrift Scenario").repeqt(100) {
   exec(callback)
 }
+
+setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 ```
 
 ## Execute as sbt
