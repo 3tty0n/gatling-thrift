@@ -20,23 +20,16 @@ class ThriftAction[A](val statsEngine: StatsEngine,
     val start = System.currentTimeMillis()
     callback.respond {
       case Return(v) =>
-        val end = System.currentTimeMillis()
+        val end     = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
         logger.info(s"result: $v")
         statsEngine.logResponse(session, requestName, timings, OK, None, None)
         next ! session
       case Throw(e) =>
-        val end = System.currentTimeMillis()
+        val end     = System.currentTimeMillis()
         val timings = ResponseTimings(start, end)
         logger.error(s"An error is occurred: ${e.getMessage}", e)
-        statsEngine.logResponse(
-          session,
-          requestName,
-          timings,
-          KO,
-          None,
-          Some(e.getMessage)
-        )
+        statsEngine.logResponse(session, requestName, timings, KO, None, Some(e.getMessage))
         next ! session
     }
 

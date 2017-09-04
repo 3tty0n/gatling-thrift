@@ -17,7 +17,6 @@ case class ThriftProtocolBuilder(connection: Connection = Connection()) {
 }
 
 object ThriftProtocolBuilder {
-  implicit def toThriftProtocolBuilder(
-    builder: ThriftProtocolBuilder
-  ): ThriftProtocol = builder.build()
+  implicit def toThriftProtocolBuilder(builder: ThriftProtocolBuilder): ThriftProtocol =
+    builder.build()
 }

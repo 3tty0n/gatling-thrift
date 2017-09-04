@@ -9,28 +9,27 @@ import io.gatling.thrift.data.Connection
 class ThriftProtocol(connection: Connection) {
 
   val ThriftProtocolKey = new ProtocolKey {
-    override type Protocol = ThriftProtocol
+    override type Protocol   = ThriftProtocol
     override type Components = ThriftComponents
 
     override def protocolClass: Class[protocol.Protocol] =
       classOf[ThriftProtocol]
         .asInstanceOf[Class[io.gatling.core.protocol.Protocol]]
 
-    override def defaultProtocolValue(
-      configuration: GatlingConfiguration
-    ): Protocol = ThriftProtocol(connection)
+    override def defaultProtocolValue(configuration: GatlingConfiguration): Protocol =
+      ThriftProtocol(connection)
 
     override def newComponents(
-      system: ActorSystem,
-      coreComponents: CoreComponents
+        system: ActorSystem,
+        coreComponents: CoreComponents
     ): ThriftProtocol => ThriftComponents = { thriftProtocol =>
       ThriftComponents(thriftProtocol)
     }
   }
 
   def requestName: String = connection.requestName
-  def port: Int = connection.port
-  def host: String = connection.host
+  def port: Int           = connection.port
+  def host: String        = connection.host
 }
 
 object ThriftProtocol {

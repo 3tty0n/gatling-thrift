@@ -13,11 +13,10 @@ trait ThriftDsl {
   def thrift: ThriftProtocolBuilder = ThriftProtocolBuilder()
 
   implicit def thriftProtocolBuilderToThriftProtocol(
-    builder: ThriftProtocolBuilder
+      builder: ThriftProtocolBuilder
   ): ThriftProtocol = builder.build()
 
-  implicit def callbackToThriftActionBuilder[A](
-    callback: => Future[A]
-  ): ThriftActionBuilder[A] = ThriftActionBuilder(callback)
+  implicit def callbackToThriftActionBuilder[A](callback: => Future[A]): ThriftActionBuilder[A] =
+    ThriftActionBuilder(callback)
 
 }

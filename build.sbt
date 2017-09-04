@@ -3,11 +3,11 @@ import sbt.Keys._
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
-  val finatra = "2.12.0"
-  val logback = "1.1.7"
+  val finatra   = "2.12.0"
+  val logback   = "1.1.7"
   val scalatest = "3.0.3"
-  val jackson = "2.9.0"
-  val gatling = "2.3.0"
+  val jackson   = "2.9.0"
+  val gatling   = "2.3.0"
 }
 
 lazy val baseSettings = Seq(
@@ -29,9 +29,9 @@ lazy val baseSettings = Seq(
     "com.twitter" %% "finatra-thrift" % versions.finatra excludeAll (
       ExclusionRule(organization = "com.fasterxml.jackson.module")
     ),
-    "ch.qos.logback" % "logback-classic" % versions.logback,
+    "ch.qos.logback"               % "logback-classic"       % versions.logback,
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versions.jackson,
-    "org.scalatest" %% "scalatest" % versions.scalatest % "test"
+    "org.scalatest"                %% "scalatest"            % versions.scalatest % "test"
   ),
   resolvers += Resolver.sonatypeRepo("releases")
 )
@@ -67,9 +67,7 @@ lazy val publishSettings = Seq(
   pomIncludeRepository := { _ =>
     false
   },
-  licenses := Seq(
-    "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
-  ),
+  licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
   pomExtra :=
     <url>https://github.com/3tty0n/gatling-thrift</url>
       <developers>
@@ -87,10 +85,7 @@ lazy val publishSettings = Seq(
 
 lazy val root = (project in file("."))
   .settings(baseSettings, publishSettings)
-  .settings(
-    name := "gatling-thrift",
-    publish := Def.sequential(publish in `gatling-thrift`).value
-  )
+  .settings(name := "gatling-thrift", publish := Def.sequential(publish in `gatling-thrift`).value)
   .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
@@ -98,8 +93,8 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .settings(
     name := "gatling-thrift",
     libraryDependencies ++= Seq(
-      "io.gatling" % "gatling-app" % versions.gatling,
-      "io.gatling" % "gatling-test-framework" % versions.gatling,
+      "io.gatling"            % "gatling-app"               % versions.gatling,
+      "io.gatling"            % "gatling-test-framework"    % versions.gatling,
       "io.gatling.highcharts" % "gatling-charts-highcharts" % versions.gatling
     )
   )
@@ -113,7 +108,7 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
     mainClass in assembly := Some("simulation.ThriftSimulationMain"),
     mappings in Universal := {
       val universalMappings = (mappings in Universal).value
-      val fatJar = (assembly in Compile).value
+      val fatJar            = (assembly in Compile).value
       val filtered = universalMappings.filter {
         case (file, name) => !name.endsWith(".jar")
       }
