@@ -19,7 +19,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
        ```scala
        libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.3.1"
        ```
-      
+
     1. If you use Scala 2.11.x and Gatling 2.2.x:
        see this [documentation](https://github.com/3tty0n/gatling-thrift/tree/0.1.0#gatling-thrift).
        ```scala
@@ -38,7 +38,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
     ```scala
     enablePlugins(GatlingPlugin)
     ```
-    
+
 ## Usage
 
 ```scala
@@ -70,9 +70,9 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 
     ```scala
     package simulation
-    
+
     import io.gatling.thrift.Predef._
-    
+
     class ThriftSimulationExample extends ThriftSimulation {
       ...
     }
@@ -149,35 +149,37 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 1. Add settings as below
 
     ```scala
-    assemblyMergeStrategy in assembly := {
-      case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
-      case meta(_)                           => MergeStrategy.discard
-      case "BUILD"                           => MergeStrategy.discard
-      case x =>
-        val oldStrategy = (assemblyMergeStrategy in assembly).value
-        oldStrategy(x)
-    }
-
-    test in assembly := {}
+    lazy val yourProject = (project in file("your-project"))
+      .settings(publishSettings)
+      .settings(
+        ...
+      )
 
     lazy val meta = """META.INF(.)*""".r
 
-    assemblyJarName in assembly := "gatling-thrift-example.jar"
-
-    mainClass in assembly := Some("simulation.ThriftSimulationMain")
-
-    mappings in Universal := {
-      val universalMappings = (mappings in Universal).value
-      val fatJar = (assembly in Compile).value
-      val filtered = universalMappings.filter {
-        case (file, name) => !name.endsWith(".jar")
-      }
-      filtered :+ (fatJar -> ("lib/" + fatJar.getName))
-    }
-
-    scriptClasspath := Seq((assemblyJarName in assembly).value)
-
-    publish := (publish in Universal).value  // if you want to publish to local repository, add `publishLocal := (publish in Universal).value`
+    lazy val publishSettings = Seq(
+      assemblyMergeStrategy in assembly := {
+        case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
+        case meta(_)                           => MergeStrategy.discard
+        case "BUILD"                           => MergeStrategy.discard
+        case x =>
+          val oldStrategy = (assemblyMergeStrategy in assembly).value
+          oldStrategy(x)
+      },
+      test in assembly := {},
+      assemblyJarName in assembly := "gatling-thrift-example.jar",
+      mainClass in assembly := Some("simulation.ThriftSimulationMain"),
+      mappings in Universal := {
+        val universalMappings = (mappings in Universal).value
+        val fatJar = (assembly in Compile).value
+        val filtered = universalMappings.filter {
+          case (file, name) => !name.endsWith(".jar")
+        }
+        filtered :+ (fatJar -> ("lib/" + fatJar.getName))
+      },
+      scriptClasspath := Seq((assemblyJarName in assembly).value)
+      publish := (publish in Universal).value  // if you want to publish to local repository, add `publishLocal := (publish in Universal).value`
+    )
     ```
 
 1. Execute publish task
