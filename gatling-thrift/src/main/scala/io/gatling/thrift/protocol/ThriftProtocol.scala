@@ -6,7 +6,7 @@ import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.protocol.ProtocolKey
 import io.gatling.thrift.data.Connection
 
-class ThriftProtocol(connection: Connection) {
+class ThriftProtocol(val connection: Connection) {
 
   val ThriftProtocolKey = new ProtocolKey {
     override type Protocol   = ThriftProtocol
@@ -26,10 +26,6 @@ class ThriftProtocol(connection: Connection) {
       ThriftComponents(thriftProtocol)
     }
   }
-
-  def requestName: String = connection.requestName
-  def port: Int           = connection.port
-  def host: String        = connection.host
 }
 
 object ThriftProtocol {

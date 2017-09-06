@@ -13,7 +13,7 @@ class ThriftActionBuilder[A](callback: => Future[A])(implicit thriftProtocol: Th
     import ctx._
 
     val statsEngine = coreComponents.statsEngine
-    new ThriftAction[A](statsEngine, next, thriftProtocol.requestName, callback)
+    new ThriftAction[A](statsEngine, next, thriftProtocol.connection.requestName, callback)
   }
 }
 
