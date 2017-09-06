@@ -1,4 +1,5 @@
 import sbt.Keys._
+import ReleaseTransformations._
 
 parallelExecution in ThisBuild := false
 
@@ -33,7 +34,8 @@ lazy val baseSettings = Seq(
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versions.jackson,
     "org.scalatest"                %% "scalatest"            % versions.scalatest % "test"
   ),
-  resolvers += Resolver.sonatypeRepo("releases")
+  resolvers += Resolver.sonatypeRepo("releases"),
+  releaseProcess := aggregateReleaseProcess
 )
 
 lazy val assemblySettings = {
@@ -81,6 +83,19 @@ lazy val publishSettings = Seq(
         <url>git@github.com:3tty0n/gatling-thrift.git</url>
         <connection>scm:git:git@github.com:3tty0n/gatling-thrift.git</connection>
       </scm>
+)
+
+lazy val aggregateReleaseProcess = Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommand("gatling-thrift/publishSigned"),
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
 )
 
 lazy val root = (project in file("."))
