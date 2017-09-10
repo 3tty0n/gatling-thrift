@@ -29,7 +29,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 1. In `project/plugins.sbt`, add:
 
     ```scala
-    addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.18.0")
+    addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.20.0")
     addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.2")
     ```
 
