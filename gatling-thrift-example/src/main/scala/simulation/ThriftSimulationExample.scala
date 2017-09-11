@@ -1,1 +1,0 @@
-gatling-thrift-example/src/test/scala/simulation/ThriftSimulationExample.scala
