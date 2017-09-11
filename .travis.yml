@@ -9,3 +9,4 @@ scala:
   - 2.12.3
 script:
   - sbt compile test:compile test
+  - sbt gatling-thrift-example/gatling:test
