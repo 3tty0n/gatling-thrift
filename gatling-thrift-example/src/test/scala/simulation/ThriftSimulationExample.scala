@@ -15,7 +15,7 @@ class ThriftSimulationExample extends ThriftSimulation {
   val client: PingService.FutureIface =
     Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
-  implicit val callback: Future[String] =
+  def callback: Future[String] =
     client.echo(new Random().nextInt().toString)
 
   implicit val thriftProtocol: ThriftProtocol =
