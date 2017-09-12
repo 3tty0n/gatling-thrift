@@ -92,7 +92,7 @@ lazy val aggregateReleaseProcess = Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommand("gatling-thrift/publishSigned"),
+  releaseStepCommandAndRemaining("gatling-thrift/publishSigned"),
   setNextVersion,
   commitNextVersion,
   pushChanges
