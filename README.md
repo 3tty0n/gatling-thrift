@@ -51,7 +51,8 @@ implicit val thriftProtocol: ThriftProtocol = thrift.
   host("localhost").
   requestName("example request")
 
-def callback: Future[String] = client.echo(new Random().nextInt().toString)
+def callback: Future[String] = client.
+  echo(new Random().nextInt().toString)
 
 val scn = senario("Thrift Scenario").repeqt(100) {
   exec(callback)
