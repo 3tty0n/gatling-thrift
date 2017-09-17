@@ -39,13 +39,16 @@ lazy val baseSettings = Seq(
 )
 
 lazy val assemblySettings = {
-  val meta = """META.INF(.)*""".r
   Seq(
     assemblyMergeStrategy in assembly := {
       case PathList("io", "netty", xs @ _ *) =>
         MergeStrategy.first
-      case meta(_) =>
+      case PathList("META-INF", "MANIFEST.MF") =>
         MergeStrategy.discard
+      case PathList("META-INF", "io.netty.versions.properties") =>
+        MergeStrategy.first
+      case PathList("META-INF", "services", _) =>
+        MergeStrategy.concat
       case "BUILD" =>
         MergeStrategy.discard
       case x =>
