@@ -151,25 +151,38 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 
     ```scala
     lazy val yourProject = (project in file("your-project"))
-      .settings(publishSettings)
+      .settings(
+        publishSettings,
+        assemblySettings
+      )
       .settings(
         ...
       )
 
-    lazy val meta = """META.INF(.)*""".r
+    lazy val assemblySettings = {
+      Seq(
+        assemblyMergeStrategy in assembly := {
+          case PathList("io", "netty", xs @ _ *) =>
+            MergeStrategy.first
+          case PathList("META-INF", "MANIFEST.MF") =>
+            MergeStrategy.discard
+          case PathList("META-INF", "io.netty.versions.properties") =>
+            MergeStrategy.first
+          case PathList("META-INF", "services", _) =>
+            MergeStrategy.concat
+          case "BUILD" =>
+            MergeStrategy.discard
+          case x =>
+            val oldStrategy = (assemblyMergeStrategy in assembly).value
+            oldStrategy(x)
+        },
+        test in assembly := {},
+        assemblyJarName in assembly := "gatling-thrift-example.jar",
+        mainClass in assembly := Some("simulation.ThriftSimulationMain")
+      )
+    }
 
     lazy val publishSettings = Seq(
-      assemblyMergeStrategy in assembly := {
-        case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
-        case meta(_)                           => MergeStrategy.discard
-        case "BUILD"                           => MergeStrategy.discard
-        case x =>
-          val oldStrategy = (assemblyMergeStrategy in assembly).value
-          oldStrategy(x)
-      },
-      test in assembly := {},
-      assemblyJarName in assembly := "gatling-thrift-example.jar",
-      mainClass in assembly := Some("simulation.ThriftSimulationMain"),
       mappings in Universal := {
         val universalMappings = (mappings in Universal).value
         val fatJar = (assembly in Compile).value
@@ -179,7 +192,8 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
         filtered :+ (fatJar -> ("lib/" + fatJar.getName))
       },
       scriptClasspath := Seq((assemblyJarName in assembly).value)
-      publish := (publish in Universal).value  // if you want to publish to local repository, add `publishLocal := (publish in Universal).value`
+      publish := (publish in Universal).value
+      // if you want to publish to local repository, add `publishLocal := (publish in Universal).value`
     )
     ```
 
