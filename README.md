@@ -200,13 +200,13 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 1. Execute publish task
 
     ```bash
-    $ sbt gatling-thrift-exampoe/publish # if you want to publish to local repository, execute `sbt gatling-thrift-example/publishLocal`
+    $ sbt gatling-thrift-example/publish # if you want to publish to local repository, execute `sbt gatling-thrift-example/publishLocal`
     ```
 
 1. If you want to execute the load test packaged by sbt-native-packager, execute commands as below.
 
     ```bash
-    $ cd /path/to/gatling-thrift-example/0.1.0-SNAPSHOT/zips
+    $ cd /path/to/gatling-thrift-example/<version>/zips
     $ unzip gatling-laodtest.zip
     $ cd gatling-loadtest-0.1.0-SNAPSHOT
     $ bin/gatling-thrift-example -s simulation.ThriftSimulationExample
