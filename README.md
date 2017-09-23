@@ -111,9 +111,22 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 3. Define `sbt-assembly` settings as below
 
     ```scala
-    assemblyJarName in assembly := "gatling-thrift-example.jar"
-
-    mainClass in assembly := Some("simulation.ThriftSimulationMain"),
+    lazy val assemblySettings =
+      Seq(
+        assemblyMergeStrategy in assembly := {
+          case PathList("io", "netty", xs @ _ *) => MergeStrategy.first
+          case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+          case PathList("META-INF", "io.netty.versions.properties") => MergeStrategy.first
+          case PathList("META-INF", "services", _) => MergeStrategy.concat
+          case "BUILD" => MergeStrategy.discard
+          case x =>
+            val oldStrategy = (assemblyMergeStrategy in assembly).value
+            oldStrategy(x)
+        },
+        test in assembly := {},
+        assemblyJarName in assembly := "gatling-thrift-example.jar",
+        mainClass in assembly := Some("simulation.ThriftSimulationMain"),
+      )
     ```
 
 4. Create fat jar
@@ -159,28 +172,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
         ...
       )
 
-    lazy val assemblySettings = {
-      Seq(
-        assemblyMergeStrategy in assembly := {
-          case PathList("io", "netty", xs @ _ *) =>
-            MergeStrategy.first
-          case PathList("META-INF", "MANIFEST.MF") =>
-            MergeStrategy.discard
-          case PathList("META-INF", "io.netty.versions.properties") =>
-            MergeStrategy.first
-          case PathList("META-INF", "services", _) =>
-            MergeStrategy.concat
-          case "BUILD" =>
-            MergeStrategy.discard
-          case x =>
-            val oldStrategy = (assemblyMergeStrategy in assembly).value
-            oldStrategy(x)
-        },
-        test in assembly := {},
-        assemblyJarName in assembly := "gatling-thrift-example.jar",
-        mainClass in assembly := Some("simulation.ThriftSimulationMain")
-      )
-    }
+    lazy val assemblySettings = ...
 
     lazy val publishSettings = Seq(
       mappings in Universal := {
