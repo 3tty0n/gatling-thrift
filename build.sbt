@@ -14,7 +14,7 @@ lazy val versions = new {
 lazy val baseSettings = Seq(
   organization := "com.github.3tty0n",
   scalaVersion := "2.12.3",
-  scalafmtVersion in ThisBuild := "1.0.0-RC2",
+  scalafmtVersion in ThisBuild := "1.0.0",
   scalafmtOnCompile := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(
@@ -41,7 +41,7 @@ lazy val baseSettings = Seq(
 lazy val assemblySettings = {
   Seq(
     assemblyMergeStrategy in assembly := {
-      case PathList("io", "netty", xs @ _ *) =>
+      case PathList("io", "netty", xs @ _*) =>
         MergeStrategy.first
       case PathList("META-INF", "MANIFEST.MF") =>
         MergeStrategy.discard
