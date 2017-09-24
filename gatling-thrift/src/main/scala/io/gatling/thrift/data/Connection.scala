@@ -1,8 +1,6 @@
 package io.gatling.thrift.data
 
-case class Connection(host: String = "localhost",
-                      port: Int = 9911,
-                      requestName: String = "Thrift Action") {
+case class Connection(host: String = "localhost", port: Int = 9911, requestName: String = "Thrift Action") {
 
   def validate(): Unit = {
     require(host.nonEmpty, "Host name for Thrift Server is not set.")

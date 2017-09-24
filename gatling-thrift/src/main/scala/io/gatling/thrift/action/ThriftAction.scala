@@ -8,10 +8,7 @@ import io.gatling.core.stats.StatsEngine
 import io.gatling.core.stats.message.ResponseTimings
 import io.gatling.core.util.NameGen
 
-class ThriftAction[A](val statsEngine: StatsEngine,
-                      val next: Action,
-                      requestName: String,
-                      callback: => Future[A])
+class ThriftAction[A](val statsEngine: StatsEngine, val next: Action, requestName: String, callback: => Future[A])
     extends ExitableAction
     with NameGen {
   override def name: String = genName("thriftConnect")
