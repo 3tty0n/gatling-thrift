@@ -14,5 +14,6 @@ services:
 script:
   - sbt gatling-thrift-example/docker:publishLocal
   - docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:0.4.0 bin/gatling-thrift-example
+  - docker ps -a
   - sbt scalafmt::test
   - sbt gatling-thrift-example/gatling:test
