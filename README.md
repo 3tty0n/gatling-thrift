@@ -206,6 +206,22 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
     $ bin/gatling-thrift-example -s simulation.ThriftSimulationExample
     ```
 
+## Development
+
+### Start the server
+
+```bash
+$ sbt gatling-thrift-example/docker:publishLocal
+$ export VERSION=<version>
+$ docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:$VERSION bin/gatling-thrift-example
+```
+
+### Execute the test
+
+```bash
+$ sbt gatling-thrift-example/gatling:test
+```
+
 ## How to construct the scenario of the load testing
 
 - [Inject](http://gatling.io/docs/current/general/simulation_setup/)
