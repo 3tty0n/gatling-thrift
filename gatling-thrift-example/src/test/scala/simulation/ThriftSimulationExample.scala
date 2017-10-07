@@ -18,34 +18,43 @@ class ThriftSimulationExample extends ThriftSimulation {
   val client: PingService.FutureIface =
     Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
-  private val isDone = new AtomicBoolean(false)
+  private val random = new Random()
 
-  // https://github.com/3tty0n/gatling-thrift/issues/9
-  // This function arises OK once and makes rest of them KO
-  def callbackIssue9: Session => Future[String] = { _ =>
-    if (isDone.compareAndSet(false, true)) {
-      Future.value("first")
-    } else {
-      Future.exception(new RuntimeException("already done"))
+  object CallBacks {
+    private val isDone = new AtomicBoolean(false)
+
+    // https://github.com/3tty0n/gatling-thrift/issues/9
+    // This function arises OK once and makes rest of them KO
+    def callbackIssue9: Session => Future[String] = { _ =>
+      if (isDone.compareAndSet(false, true)) {
+        Future.value("first")
+      } else {
+        Future.exception(new RuntimeException("already done"))
+      }
     }
-  }
 
-  def callbackSimple: Session => Future[String] = { _ =>
-    client.echo(new Random().nextInt().toString)
-  }
+    def callbackSimple: Session => Future[String] = { session =>
+      client.echo(session("randNum").as[Int].toString)
+    }
 
-  def callbackIssue10: Session => Future[String] = { session =>
-    client.echo(session("foo").as[String])
+    def callbackIssue10: Session => Future[String] = { session =>
+      client.echo(session("foo").as[String])
+    }
   }
 
   implicit val thriftProtocol: ThriftProtocol =
     thrift.port(9911).host("localhost").requestName("example request")
 
   val scn: ScenarioBuilder = scenario("Thrift Scenario")
-    .exec(callbackSimple.action)
-    .exec(callbackIssue9.action)
-    .exec(session => session.set("foo", "FOO"))
-    .exec(callbackIssue10.action)
+    .exec { session =>
+      session.setAll(
+        ("randNum", random.nextInt()),
+        ("foo", "FOO")
+      )
+    }
+    .exec { CallBacks.callbackSimple.action }
+    .exec { CallBacks.callbackIssue9.action }
+    .exec { CallBacks.callbackIssue10.action }
 
   setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 }
