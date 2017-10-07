@@ -208,7 +208,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 
 ## Development
 
-### Start the server
+1. Start the server
 
 ```bash
 $ sbt gatling-thrift-example/docker:publishLocal
@@ -216,7 +216,7 @@ $ export VERSION=<version>
 $ docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:$VERSION bin/gatling-thrift-example
 ```
 
-### Execute the test
+2. Execute the test
 
 ```bash
 $ sbt gatling-thrift-example/gatling:test
