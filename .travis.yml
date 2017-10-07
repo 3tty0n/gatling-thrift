@@ -7,6 +7,13 @@ cache:
     - $HOME/.sbt
 scala:
   - 2.12.3
-script:
-  - sbt compile test:compile test
-  - sbt gatling-thrift-example/gatling:test
+
+jobs:
+  include:
+  - stage: scalafmt
+    script: sbt scalafmt::test
+
+  - stage: test
+    script:
+      - sbt compile test:compile
+      - sbt gatling-thrift-example/gatling:test
