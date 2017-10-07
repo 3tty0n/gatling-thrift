@@ -8,18 +8,11 @@ cache:
 scala:
   - 2.12.3
 
-brefore_install:
-  - docker pull micchon/gatling-thrift-example:0.4.0
+services:
+  - docker
+
+script:
+  - sbt gatling-thrift-example/docker:publishLocal
   - docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:0.4.0 bin/gatling-thrift-example
-  - sleep 10
-  - docker ps -a
-
-jobs:
-  include:
-  - stage: scalafmt
-    script: sbt scalafmt::test
-
-  - stage: test
-    script:
-      - sbt compile test:compile
-      - sbt gatling-thrift-example/gatling:test
+  - sbt scalafmt::test
+  - sbt gatling-thrift-example/gatling:test
