@@ -1,12 +1,18 @@
 language: scala
 jdk: oraclejdk8
-sudo: false
+sudo: required
 cache:
   directories:
     - $HOME/.ivy2/cache
     - $HOME/.sbt
 scala:
   - 2.12.3
+
+brefore_install:
+  - docker pull micchon/gatling-thrift-example:0.4.0
+  - docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:0.4.0 bin/gatling-thrift-example
+  - sleep 10
+  - docker ps -a
 
 jobs:
   include:
