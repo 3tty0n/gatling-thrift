@@ -1,6 +1,5 @@
 import sbt.Keys._
 import ReleaseTransformations._
-
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
@@ -133,12 +132,20 @@ lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   )
 
 lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
-  .enablePlugins(GatlingPlugin, JavaAppPackaging, UniversalDeployPlugin)
+  .enablePlugins(
+    GatlingPlugin,
+    JavaAppPackaging,
+    UniversalDeployPlugin,
+    DockerPlugin
+  )
   .settings(baseSettings, assemblySettings)
   .settings(
     name := "gatling-thrift-example",
     assemblyJarName in assembly := "gatling-thrift-example.jar",
     mainClass in assembly := Some("simulation.ThriftSimulationMain"),
+    mainClass in (Compile, run) := Some("server.ExampleServerMain"),
+    dockerBaseImage in Docker := "dockerfile/java",
+    packageName in Docker := "micchon/gatling-thrift-example",
     mappings in Universal := {
       val universalMappings = (mappings in Universal).value
       val fatJar            = (assembly in Compile).value
