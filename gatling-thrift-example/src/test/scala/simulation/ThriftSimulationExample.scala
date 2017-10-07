@@ -18,7 +18,16 @@ class ThriftSimulationExample extends ThriftSimulation {
   val client: PingService.FutureIface =
     Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
+  implicit val thriftProtocol: ThriftProtocol =
+    thrift.port(9911).host("localhost").requestName("example request")
+
   private val random = new Random()
+
+  val feeder = Array(
+    Map("foo" -> "foo1", "bar" -> "bar1"),
+    Map("foo" -> "foo2", "bar" -> "bar2"),
+    Map("foo" -> "foo3", "bar" -> "bar3")
+  ).random
 
   object CallBacks {
     private val isDone = new AtomicBoolean(false)
@@ -38,23 +47,26 @@ class ThriftSimulationExample extends ThriftSimulation {
     }
 
     def callbackIssue10: Session => Future[String] = { session =>
+      client.echo(session("i").as[String])
+    }
+
+    def callBackFeeder: Session => Future[String] = { session =>
       client.echo(session("foo").as[String])
     }
   }
-
-  implicit val thriftProtocol: ThriftProtocol =
-    thrift.port(9911).host("localhost").requestName("example request")
 
   val scn: ScenarioBuilder = scenario("Thrift Scenario")
     .exec { session =>
       session.setAll(
         ("randNum", random.nextInt()),
-        ("foo", "FOO")
+        ("i", "session support")
       )
     }
+    .feed(feeder)
+    .exec { CallBacks.callBackFeeder.action }
     .exec { CallBacks.callbackSimple.action }
-    .exec { CallBacks.callbackIssue9.action }
     .exec { CallBacks.callbackIssue10.action }
+  //.exec { CallBacks.callbackIssue9.action }
 
   setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 }
