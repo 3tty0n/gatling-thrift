@@ -1,4 +1,4 @@
-package io.gatling.thrift.testrunner
+package io.gatling.app.runner
 
 import io.gatling.app.{CliArgumentParser, Gatling}
 import io.gatling.core.Predef.Simulation

@@ -116,8 +116,18 @@ lazy val aggregateReleaseProcess = Seq[ReleaseStep](
 )
 
 lazy val root = (project in file("."))
+  .enablePlugins(DockerPlugin)
   .settings(baseSettings, publishSettings)
-  .settings(name := "gatling-thrift", publish := Def.sequential(publish in `gatling-thrift`).value)
+  .settings(
+    name := "gatling-thrift",
+    publishLocal in Docker := Def.sequential(
+      publishLocal in Docker in `gatling-thrift-example`
+    ),
+    test in Test := Def.sequential(
+      test in Test in `gatling-thrift-example`,
+      test in Test in `gatling-thrift`
+    )
+  )
   .aggregate(`gatling-thrift`, `gatling-thrift-example`)
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
@@ -155,7 +165,6 @@ lazy val `gatling-thrift-example` = (project in file("gatling-thrift-example"))
       filtered :+ (fatJar -> ("lib/" + fatJar.getName))
     },
     scriptClasspath := Seq((assemblyJarName in assembly).value),
-    publish := {},
-    publishLocal := (publishLocal in Universal).value
+    publish := {}
   )
   .dependsOn(`gatling-thrift`)

@@ -11,9 +11,11 @@ scala:
 services:
   - docker
 
+env:
+  - VERSION=$(cat version.sbt | sed -e "s/[^0-9.]//g")
+
 script:
-  - sbt gatling-thrift-example/docker:publishLocal
-  - docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:0.4.0 bin/gatling-thrift-example
+  - sbt docker:publishLocal
+  - docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:${VERSION} bin/gatling-thrift-example
   - docker ps -a
-  - sbt scalafmt::test
-  - sbt gatling-thrift-example/gatling:test
+  - sbt scalafmt::test gatling:test

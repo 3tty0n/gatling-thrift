@@ -139,7 +139,7 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
     ```scala
     package simulation
 
-    import io.gatling.thrift.testrunner.GatlingRunner
+    import io.gatling.app.runner.GatlingRunner
     import io.gatling.thrift.Predef._
 
     object ThriftSimulationMain extends GatlingRunner
