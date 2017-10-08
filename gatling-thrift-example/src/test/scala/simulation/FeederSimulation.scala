@@ -23,9 +23,10 @@ class FeederSimulation extends ThriftSimulation {
 
   val orderFeed = csv("src/test/resources/orders.csv").random
 
-  val scn = scenario("Feeder Scenario")
-    .feed(orderFeed)
-    .exec(callbackFeeder.action)
+  val scn = scenario("Feeder Scenario").repeat(2) {
+    feed(orderFeed)
+      .exec(callbackFeeder.action)
+  }
 
   setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 }

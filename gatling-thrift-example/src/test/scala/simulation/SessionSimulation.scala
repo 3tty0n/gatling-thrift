@@ -24,11 +24,13 @@ class SessionSimulation extends ThriftSimulation {
     client.echo(session("randNum").as[Int].toString)
   }
 
-  val scn: ScenarioBuilder = scenario("Thrift Scenario")
-    .exec { session =>
+  val scn: ScenarioBuilder = scenario("Thrift Scenario").repeat(2) {
+    exec { session =>
       session.set("randNum", new Random().nextInt())
+    }.exec {
+      callbackSession.action
     }
-    .exec { callbackSession.action }
+  }
 
   setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 }
