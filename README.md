@@ -245,9 +245,10 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 1. If you want to execute the load test packaged by sbt-native-packager, execute commands as below.
 
     ```bash
-    $ cd /path/to/gatling-thrift-example/<version>/zips
+    $ export VERSION=$(cat version.sbt | sed -e "s/[^0-9.]//g")
+    $ cd /path/to/gatling-thrift-example/$VERSION/zips
     $ unzip gatling-laodtest.zip
-    $ cd gatling-loadtest-0.1.0-SNAPSHOT
+    $ cd gatling-loadtest-$VERSION
     $ bin/gatling-thrift-example -s simulation.ThriftSimulationExample
     ```
 
@@ -257,7 +258,7 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 
     ```bash
     $ sbt gatling-thrift-example/docker:publishLocal
-    $ export VERSION=<version>
+    $ export VERSION=$(cat version.sbt | sed -e "s/[^0-9.]//g")
     $ docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:$VERSION bin/gatling-thrift-example
     ```
 
