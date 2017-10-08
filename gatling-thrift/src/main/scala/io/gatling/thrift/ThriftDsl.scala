@@ -19,4 +19,7 @@ trait ThriftDsl {
     def action: ThriftActionBuilder[T] = ThriftActionBuilder(f)
   }
 
+  implicit class Future2ActionBuilder[T](f: => Future[T]) {
+    def action: ThriftActionBuilder[T] = ThriftActionBuilder(_ => f)
+  }
 }
