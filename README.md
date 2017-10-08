@@ -41,19 +41,24 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 
 ## Usage
 
-```scala
+First, you should define `client` and `thriftProtocol`
+
+``` scala
 import io.gatling.thrift.Predef._
 
 val client = Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
 
-implicit val thriftProtocol: ThriftProtocol = thrift.
-  port(9911).
-  host("localhost").
-  requestName("example request")
+implicit val thriftProtocol: ThriftProtocol = thrift
+  .port(9911)
+  .host("localhost")
+  .requestName("example request")
+```
 
-def callback: Session => Future[String] = { session =>
+### Simple
+
+```scala
+def callback: Future[String] = {
   client.echo(new Random().nextInt().toString)
-  // if you want to use session, `client.echo(session("key").as[String])`
 }
 
 val scn = senario("Thrift Scenario").repeqt(100) {
@@ -62,6 +67,46 @@ val scn = senario("Thrift Scenario").repeqt(100) {
 
 setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 ```
+
+### Session
+
+```scala
+def callback: Session => Future[String] = { session =>
+  clinet.echo(session("randNum").as[Int].toString)
+}
+
+val scn = senario("Session Scenario").repeqt(100) {
+  exec { session =>
+    session.set("randNum", new Random().nextInt)
+  }.exec(callback.action)
+}
+
+setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
+```
+
+### Feeder
+
+```scala
+/**
+ * accountId, sym, qty, price
+ * 1L, 7203.T, 10, 6700
+ * 2L, 7100.T, 5, 322
+ * 3L, 8100.T, 40, 788
+ */
+val orderFeed = csv("orders.csv").random
+
+def callback: Session => Future[String] = { session =>
+  clinet.echo(session("sym").as[Int].toString)
+}
+
+val scn = senario("Feeder Scenario").repeqt(100) {
+  feed(orderFeed)
+    .exec(callback.action)
+}
+
+setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
+```
+
 
 ## Execute as sbt
 
@@ -210,17 +255,17 @@ You can publish your simulation as zip by using `sbt-native-packager` and `sbt-a
 
 1. Start the server
 
-```bash
-$ sbt gatling-thrift-example/docker:publishLocal
-$ export VERSION=<version>
-$ docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:$VERSION bin/gatling-thrift-example
-```
+    ```bash
+    $ sbt gatling-thrift-example/docker:publishLocal
+    $ export VERSION=<version>
+    $ docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:$VERSION bin/gatling-thrift-example
+    ```
 
 2. Execute the test
 
-```bash
-$ sbt gatling-thrift-example/gatling:test
-```
+    ```bash
+    $ sbt gatling-thrift-example/gatling:test
+    ```
 
 ## How to construct the scenario of the load testing
 
