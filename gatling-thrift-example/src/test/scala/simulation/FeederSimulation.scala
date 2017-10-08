@@ -21,7 +21,7 @@ class FeederSimulation extends ThriftSimulation {
     client.echo(session("sym").as[String])
   }
 
-  val orderFeed = csv("src/test/data/orders.csv").random
+  val orderFeed = csv("src/test/resources/orders.csv").random
 
   val scn = scenario("Feeder Scenario")
     .feed(orderFeed)
