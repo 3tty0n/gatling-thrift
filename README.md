@@ -17,7 +17,7 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 1. In `build.sbt`, add:
     1. If you use Scala 2.12.x and Gatling 2.3.x:
        ```scala
-       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.3.2"
+       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.4.1"
        ```
 
     1. If you use Scala 2.11.x and Gatling 2.2.x:
