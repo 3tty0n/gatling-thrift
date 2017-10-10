@@ -7,8 +7,8 @@
 This is a [Gatling](http://gatling.io/) third party Thrift plugin for [Finatra Thrift Server](https://twitter.github.io/finatra/user-guide/thrift/server.html).
 
 You can execute your load test as:
- - **sbt**
- - **jar** (in command line)
+ - [**sbt**](#sbt)
+ - [**jar**](#jar) (in command line)
 
 ## Set up
 
@@ -109,7 +109,7 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 ```
 
 
-## Execute as sbt
+## <a name="sbt"> Execute as sbt
 
 1. Define sbt settings. Please see [it](https://github.com/3tty0n/gatling-thrift/blob/master/gatling-thrift-example/resources/build.sbt.sample).
 
@@ -133,7 +133,7 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
     $ sbt gatling-thrift-example/gatling:test
     ```
 
-## Execute as jar
+## <a name="jar"> Execute as jar
 
 1. Implement Main `object` in `src/main/scala`
 
