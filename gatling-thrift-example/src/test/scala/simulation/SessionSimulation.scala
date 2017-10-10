@@ -32,5 +32,7 @@ class SessionSimulation extends ThriftSimulation {
     }
   }
 
-  setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
+  setUp(
+    scn.inject(nothingFor(4 seconds), atOnceUsers(100))
+  ).protocols(thriftProtocol)
 }

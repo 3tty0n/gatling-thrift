@@ -28,5 +28,7 @@ class FeederSimulation extends ThriftSimulation {
       .exec(callbackFeeder.action)
   }
 
-  setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
+  setUp(
+    scn.inject(nothingFor(4 seconds), atOnceUsers(100))
+  ).protocols(thriftProtocol)
 }

@@ -40,5 +40,7 @@ class SimpleSimulation extends ThriftSimulation {
     .exec(callbackSimple.action)
   //.exec(callbackIssue9.action)
 
-  setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
+  setUp(
+    scn.inject(nothingFor(4 seconds), atOnceUsers(100))
+  ).protocols(thriftProtocol)
 }
