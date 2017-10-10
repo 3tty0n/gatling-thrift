@@ -17,13 +17,25 @@ Builds are available for Scala 2.11.x, and for Scala 2.12.x. The main line of de
 1. In `build.sbt`, add:
     1. If you use Scala 2.12.x and Gatling 2.3.x:
        ```scala
-       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.4.2"
+       scalaVersion := "2.12.3"
+       
+       libraryDependencies ++= Seq(
+         "com.github.3tty0n"    %% "gatling-thrift"            % "0.4.2",
+         "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.0" % "test,it",
+         "io.gatling"            % "gatling-test-framework"    % "2.3.0" % "test,it"
+       )
        ```
 
     1. If you use Scala 2.11.x and Gatling 2.2.x:
        see this [documentation](https://github.com/3tty0n/gatling-thrift/tree/0.1.0#gatling-thrift).
        ```scala
-       libraryDependencies += "com.github.3tty0n" %% "gatling-thrift" % "0.1.0"
+       scalaVersion := "2.11.11"
+       
+       libraryDependencies ++= Seq(
+         "com.github.3tty0n"    %% "gatling-thrift"            % "0.1.0",
+         "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.2.5" % "test,it",
+         "io.gatling"            % "gatling-test-framework"    % "2.2.5" % "test,it"
+       )
        ```
 
 1. In `project/plugins.sbt`, add:
