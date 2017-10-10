@@ -77,7 +77,7 @@ def callback: Session => Future[String] = { session =>
 
 val scn = senario("Session Scenario").repeqt(100) {
   exec { session =>
-    session.set("randNum", new Random().nextInt
+    session.set("randNum", new Random().nextInt)
   }.exec(callback.action)
 }
 
