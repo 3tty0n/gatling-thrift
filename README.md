@@ -77,7 +77,7 @@ def callback: Session => Future[String] = { session =>
 
 val scn = senario("Session Scenario").repeqt(100) {
   exec { session =>
-    session.set("randNum", new Random().nextInt)
+    session.set("randNum", new Random().nextInt
   }.exec(callback.action)
 }
 
@@ -88,6 +88,7 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 
 ```scala
 /**
+ * Note: Please set `orders.csv` at resources directory.
  * accountId, sym, qty, price
  * 1L, 7203.T, 10, 6700
  * 2L, 7100.T, 5, 322
@@ -96,7 +97,7 @@ setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 val orderFeed = csv("orders.csv").random
 
 def callback: Session => Future[String] = { session =>
-  clinet.echo(session("sym").as[Int].toString)
+  clinet.echo(session("sym").as[String])
 }
 
 val scn = senario("Feeder Scenario").repeqt(100) {
