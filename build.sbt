@@ -116,7 +116,12 @@ lazy val aggregateReleaseProcess = Seq[ReleaseStep](
 )
 
 lazy val root = (project in file("."))
-  .enablePlugins(DockerPlugin)
+  .enablePlugins(
+    DockerPlugin,
+    ParadoxPlugin,
+    ParadoxSitePlugin,
+    GhpagesPlugin
+  )
   .settings(baseSettings, publishSettings)
   .settings(
     name := "gatling-thrift",
@@ -126,9 +131,15 @@ lazy val root = (project in file("."))
     test in Test := Def.sequential(
       test in Test in `gatling-thrift-example`,
       test in Test in `gatling-thrift`
-    )
+    ),
+    paradoxTheme := Some(builtinParadoxTheme("generic")),
+    sourceDirectory in Paradox := sourceDirectory.value / "main" / "paradox",
+    git.remoteRepo := "git@github.com:3tty0n/gatling-thrift.git"
   )
-  .aggregate(`gatling-thrift`, `gatling-thrift-example`)
+  .aggregate(
+    `gatling-thrift`,
+    `gatling-thrift-example`
+  )
 
 lazy val `gatling-thrift` = (project in file("gatling-thrift"))
   .settings(baseSettings, publishSettings)
