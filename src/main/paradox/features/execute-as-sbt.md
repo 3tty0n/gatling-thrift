@@ -32,4 +32,4 @@ class ThriftSimulationExample extends ThriftSimulation {
 }
 ```
 
-Then call `gatling:test` which will execute your scenario of the load test.
+Then call `sbt gatling:test` which will execute your scenario of the load test.

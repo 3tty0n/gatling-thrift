@@ -8,7 +8,7 @@ First you define `build.sbt` as @ref:[this](execute-as-sbt.md#set-up).
 
 ## Define your simulation
 
-Create main class in `src/main/scala`, not `src/main/test`:
+Create main class in `src/main/scala`, not `src/test/scala`:
 
 ```scala
 package simulation

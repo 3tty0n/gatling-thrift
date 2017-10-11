@@ -17,3 +17,9 @@ $ docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:$
 ```bash
 $ sbt gatling-thrift-example/gatling:test
 ```
+
+## Update the dodumentation
+
+```bash
+$ sbt clean makeSite ghpagesPushSite
+```
