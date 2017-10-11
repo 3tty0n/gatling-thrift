@@ -32,7 +32,7 @@ val scn = senario("Thrift Scenario").repeqt(100) {
   exec(callback.action)
 }
 
-setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100))).protocols(thriftProtocol)
+setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 ```
 
 @@@ warning
@@ -52,7 +52,7 @@ val scn = senario("Session Scenario").repeqt(100) {
   }.exec(callback.action)
 }
 
-setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100))).protocols(thriftProtocol)
+setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 ```
 
 @@@ note
@@ -81,7 +81,7 @@ val scn = senario("Feeder Scenario").repeqt(100) {
     .exec(callback.action)
 }
 
-setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100))).protocols(thriftProtocol)
+setUp(scn.inject(nothingFor(4 seconds), atOnceUsers(100)))
 ```
 
 @@@ note
