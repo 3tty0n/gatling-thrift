@@ -6,7 +6,7 @@ Define your sbt settings as below:
 
 ```scala
 lazy val root = (project in file(".")).
-  enableplugins(Gatlingplugin)
+  enableplugins(Gatlingplugin).
   settings(
     name := "load-test",
     scalaVersion := "2.12.3",
