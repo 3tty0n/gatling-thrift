@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/3tty0n/gatling-thrift.svg?branch=master)](https://travis-ci.org/3tty0n/gatling-thrift)
  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.3tty0n/gatling-thrift_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.3tty0n/gatling-thrift_2.12)
 
-gatling-thrift is a [Gatling](http://gatling.io/) third party plugin for [Finatra Thrift Server](https://twitter.github.io/finatra/user-guide/thrift/server.html).
+gatling-thrift is a [Gatling](http://gatling.io/) third party plugin for thrift protocol.
 
 If you want more information for Gatling, see this [documentation](https://gatling.io/documentation/).
 
