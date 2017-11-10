@@ -12,7 +12,7 @@ services:
   - docker
 
 env:
-  - VERSION=$(cat version.sbt | sed -e "s/[^0-9.]//g")
+  - VERSION=$(cat version.sbt | sed -e 's/version in ThisBuild := //g' | cut -d '"' -f2 | cut -d '"' -f1)
 
 script:
   - sbt docker:publishLocal
