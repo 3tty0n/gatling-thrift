@@ -9,13 +9,13 @@ If you want more information for Gatling, see this [documentation](https://gatli
 
 ## Set up
 
-Builds are available for for Scala 2.12.x. The main line of development of gatling-thrift is 2.12.3.
+Builds are available for for Scala 2.12.x. The main line of development of gatling-thrift is 2.12.4.
 
 First, you add `gatling-thrift` and `gatling` to `librarydependencies` in `build.sbt`:
 
 ```scala
 librarydependencies ++= Seq(
-  "com.github.3tty0n" %% "gatling-thrift" % "0.4.2",
+  "com.github.3tty0n" %% "gatling-thrift" % "0.4.3",
   "io.gatling" % "gatling-test-framework" % "2.3.0" % "test,it",
   "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.0" % "test,it"
 )
