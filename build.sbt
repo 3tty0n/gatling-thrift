@@ -83,23 +83,24 @@ lazy val publishSettings = Seq(
       Some("releases" at nexus + "service/local/staging/deploy/maven2")
   },
   publishArtifact in Test := false,
+  publishArtifact in (Compile, packageDoc) := false,
+  publishArtifact in packageDoc := false,
+  sources in (Compile, doc) := Seq.empty,
   pomIncludeRepository := { _ =>
     false
   },
+  sonatypeProfileName := "com.github.3tty0n",
   licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
-  pomExtra :=
-    <url>https://github.com/3tty0n/gatling-thrift</url>
-      <developers>
-        <developer>
-          <id>3tty0n</id>
-          <name>Yusuke Izawa</name>
-          <url>https://github.com/3tty0n</url>
-        </developer>
-      </developers>
-      <scm>
-        <url>git@github.com:3tty0n/gatling-thrift.git</url>
-        <connection>scm:git:git@github.com:3tty0n/gatling-thrift.git</connection>
-      </scm>
+  homepage := Some(url("https://github.com/3tty0n")),
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/3tty0n/gatling-thrift"),
+      "scm:git@githu.com:3tty0n/gatling-thrift.git"
+    )
+  ),
+  developers := List(
+    Developer(id = "3tty0n", name = "Yusuke Izawa", email = "yuizalp@gmail.com", url = url("https://github.com/3tty0n"))
+  )
 )
 
 lazy val aggregateReleaseProcess = Seq[ReleaseStep](
