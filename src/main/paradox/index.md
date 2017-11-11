@@ -15,7 +15,7 @@ First, you add `gatling-thrift` and `gatling` to `librarydependencies` in `build
 
 ```scala
 librarydependencies ++= Seq(
-  "com.github.3tty0n" %% "gatling-thrift" % "0.4.3",
+  "com.github.3tty0n" %% "gatling-thrift" % "0.4.4",
   "io.gatling" % "gatling-test-framework" % "2.3.0" % "test,it",
   "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.0" % "test,it"
 )
