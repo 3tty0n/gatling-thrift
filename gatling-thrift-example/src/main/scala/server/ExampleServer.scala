@@ -4,7 +4,7 @@ import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter
 import com.twitter.finatra.thrift.filters._
 import org.micchon.ping.thriftscala.PingService
-import org.micchon.ping.thriftscala.PingService.{Echo, Ping}
+import org.micchon.ping.thriftscala.PingService.{ Echo, Ping }
 import com.twitter.finatra.thrift.Controller
 import com.twitter.util.Future
 import javax.inject.Singleton

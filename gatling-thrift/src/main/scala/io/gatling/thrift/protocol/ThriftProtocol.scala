@@ -1,9 +1,9 @@
 package io.gatling.thrift.protocol
 
 import akka.actor.ActorSystem
-import io.gatling.core.{CoreComponents, protocol}
+import io.gatling.core.{ protocol, CoreComponents }
 import io.gatling.core.config.GatlingConfiguration
-import io.gatling.core.protocol.{Protocol, ProtocolKey}
+import io.gatling.core.protocol.{ Protocol, ProtocolKey }
 import io.gatling.thrift.data.Connection
 
 class ThriftProtocol(val connection: Connection) extends Protocol {

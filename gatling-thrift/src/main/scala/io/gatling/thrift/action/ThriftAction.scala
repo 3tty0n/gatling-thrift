@@ -1,8 +1,8 @@
 package io.gatling.thrift.action
 
-import com.twitter.util.{Future, Return, Throw}
-import io.gatling.commons.stats.{KO, OK}
-import io.gatling.core.action.{Action, ExitableAction}
+import com.twitter.util.{ Future, Return, Throw }
+import io.gatling.commons.stats.{ KO, OK }
+import io.gatling.core.action.{ Action, ExitableAction }
 import io.gatling.core.session.Session
 import io.gatling.core.stats.StatsEngine
 import io.gatling.core.stats.message.ResponseTimings

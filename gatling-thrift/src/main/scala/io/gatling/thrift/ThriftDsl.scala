@@ -3,7 +3,7 @@ package io.gatling.thrift
 import com.twitter.util.Future
 import io.gatling.core.session.Session
 import io.gatling.thrift.action.ThriftActionBuilder
-import io.gatling.thrift.protocol.{ThriftProtocol, ThriftProtocolBuilder}
+import io.gatling.thrift.protocol.{ ThriftProtocol, ThriftProtocolBuilder }
 
 trait ThriftDsl {
 
