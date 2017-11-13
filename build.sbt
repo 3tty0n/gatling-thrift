@@ -14,7 +14,6 @@ lazy val versions = new {
 lazy val baseSettings = Seq(
   organization := "com.github.3tty0n",
   scalaVersion := "2.12.4",
-  scalafmtVersion in ThisBuild := "1.3.0",
   scalafmtOnCompile := true,
   ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
   scalacOptions := Seq(

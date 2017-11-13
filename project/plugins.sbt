@@ -6,7 +6,7 @@ resolvers ++= Seq(
 )
 
 addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "4.20.0")
-addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.10")
+addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.14")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.2")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.5")
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
