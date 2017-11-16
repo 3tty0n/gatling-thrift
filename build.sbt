@@ -91,7 +91,7 @@ lazy val publishSettings = Seq(
   scmInfo := Some(
     ScmInfo(
       url("https://github.com/3tty0n/gatling-thrift"),
-      "scm:git@githu.com:3tty0n/gatling-thrift.git"
+      "scm:git@github.com:3tty0n/gatling-thrift.git"
     )
   ),
   developers := List(
