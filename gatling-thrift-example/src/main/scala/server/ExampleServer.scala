@@ -3,18 +3,19 @@ package server
 import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter
 import com.twitter.finatra.thrift.filters._
-import org.micchon.ping.thriftscala.PingService
 import org.micchon.ping.thriftscala.PingService.{ Echo, Ping }
 import com.twitter.finatra.thrift.Controller
 import com.twitter.util.Future
 import javax.inject.Singleton
+
+import org.micchon.ping.thriftscala.PingService
 
 object ExampleServerMain extends ExampleServer
 
 class ExampleServer extends ThriftServer {
   override val name                             = "example-server"
   override val defaultFinatraThriftPort: String = ":9911"
-  override def defaultHttpPort: Int             = 9912
+  def defaultHttpPort: Int                      = 9912
 
   override def configureThrift(router: ThriftRouter) {
     router
@@ -28,7 +29,7 @@ class ExampleServer extends ThriftServer {
 }
 
 @Singleton
-class PingController extends Controller with PingService.BaseServiceIface {
+class PingController extends Controller with PingService.ServicePerEndpoint {
 
   override val ping = handle(Ping) { args: Ping.Args =>
     info(s"Responding to ping thrift call")

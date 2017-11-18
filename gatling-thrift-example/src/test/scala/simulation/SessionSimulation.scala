@@ -14,8 +14,8 @@ import scala.concurrent.duration._
 
 class SessionSimulation extends ThriftSimulation {
 
-  val client: PingService.FutureIface =
-    Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
+  val client: PingService.MethodPerEndpoint =
+    Thrift.client.newIface[PingService.MethodPerEndpoint]("localhost:9911")
 
   implicit val thriftProtocol: ThriftProtocol =
     thrift.port(9911).host("localhost").requestName("feeder request")
