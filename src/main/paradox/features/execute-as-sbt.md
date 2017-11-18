@@ -11,7 +11,7 @@ lazy val root = (project in file(".")).
     name := "load-test",
     scalaVersion := "2.12.3",
     librarydependencies ++= Seq(
-      "com.github.3tty0n" %% "gatling-thrift" % "0.4.2",
+      "com.github.3tty0n" %% "gatling-thrift" % "0.5.0",
       "io.gatling" % "gatling-test-framework" % "2.3.0" % "test,it",
       "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.0" % "test,it"
     )
