@@ -14,7 +14,7 @@ object ExampleServerMain extends ExampleServer
 class ExampleServer extends ThriftServer {
   override val name                             = "example-server"
   override val defaultFinatraThriftPort: String = ":9911"
-  override def defaultHttpPort: Int             = 9912
+  def defaultHttpPort: Int                      = 9912
 
   override def configureThrift(router: ThriftRouter) {
     router
