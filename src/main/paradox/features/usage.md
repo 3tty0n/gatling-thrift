@@ -13,7 +13,7 @@ class YourSimulation extends ThriftSimulation {
 Define `client` and `thriftProtocol`:
 
 ``` scala
-val client = Thrift.client.newIface[PingService.FutureIface]("localhost:9911")
+val client = Thrift.client.newIface[PingService.MethodPerEndpoint]("localhost:9911")
 
 implicit val thriftProtocol: ThriftProtocol = thrift
   .port(9911)
