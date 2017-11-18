@@ -30,7 +30,7 @@
 <span class="home-icon">⌂</span>gatling-thrift
 </a>
 <div class="version-number">
-0.4.4*
+0.6.1*
 </div>
 </div>
 <div class="nav-toc">
@@ -71,7 +71,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>gatling-thrift
 </a>
 <div class="version-number">
-0.4.4*
+0.6.1*
 </div>
 </div>
 <div class="nav-toc">
@@ -112,7 +112,7 @@ class YourSimulation extends ThriftSimulation {
 }
 </code></pre>
 <p>Define <code>client</code> and <code>thriftProtocol</code>:</p>
-<pre class="prettyprint"><code class="language-scala">val client = Thrift.client.newIface[PingService.FutureIface](&quot;localhost:9911&quot;)
+<pre class="prettyprint"><code class="language-scala">val client = Thrift.client.newIface[PingService.MethodPerEndpoint](&quot;localhost:9911&quot;)
 
 implicit val thriftProtocol: ThriftProtocol = thrift
   .port(9911)

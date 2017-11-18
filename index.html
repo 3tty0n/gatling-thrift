@@ -30,7 +30,7 @@
 <span class="home-icon">⌂</span>gatling-thrift
 </a>
 <div class="version-number">
-0.4.4*
+0.6.1*
 </div>
 </div>
 <div class="nav-toc">
@@ -71,7 +71,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>gatling-thrift
 </a>
 <div class="version-number">
-0.4.4*
+0.6.1*
 </div>
 </div>
 <div class="nav-toc">
@@ -105,13 +105,13 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <p>Builds are available for for Scala 2.12.x. The main line of development of gatling-thrift is 2.12.4.</p>
 <p>First, you add <code>gatling-thrift</code> and <code>gatling</code> to <code>librarydependencies</code> in <code>build.sbt</code>:</p>
 <pre class="prettyprint"><code class="language-scala">librarydependencies ++= Seq(
-  &quot;com.github.3tty0n&quot; %% &quot;gatling-thrift&quot; % &quot;0.4.4&quot;,
+  &quot;com.github.3tty0n&quot; %% &quot;gatling-thrift&quot; % &quot;0.6.0&quot;,
   &quot;io.gatling&quot; % &quot;gatling-test-framework&quot; % &quot;2.3.0&quot; % &quot;test,it&quot;,
   &quot;io.gatling.highcharts&quot; % &quot;gatling-charts-highcharts&quot; % &quot;2.3.0&quot; % &quot;test,it&quot;
 )
 </code></pre>
 <p>And add these plugins to <code>project/plugins.sbt</code>:</p>
-<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;com.twitter&quot; % &quot;scrooge-sbt-plugin&quot; % &quot;4.20.0&quot;)
+<pre class="prettyprint"><code class="language-scala">addSbtPlugin(&quot;com.twitter&quot; % &quot;scrooge-sbt-plugin&quot; % &quot;17.11.0&quot;)
 addSbtPlugin(&quot;io.gatling&quot; % &quot;gatling-sbt&quot; % &quot;2.2.2&quot;)
 </code></pre>
 <p>Then, enable <code>Gatlingplugin</code> in <code>build.sbt</code>:</p>
