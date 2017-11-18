@@ -116,7 +116,9 @@ addSbtPlugin(&quot;io.gatling&quot; % &quot;gatling-sbt&quot; % &quot;2.2.2&quot
 </code></pre>
 <p>Then, enable <code>Gatlingplugin</code> in <code>build.sbt</code>:</p>
 <pre class="prettyprint"><code class="language-scala">enablePlugin(GatlingPlugin)
-</code></pre>
+</code></pre><div class="callout warning "><div class="callout-title">Warning</div>
+<p>This version of gatling-thrift is built on <code>17.11.0</code> of Finagle family.</p>
+<p>If you want to use version <code>17.10.0</code> of Finagle family, use version <code>0.5.0</code> of gatling-thrift.</p></div>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/3tty0n/gatling-thrift/tree/master/src/main/paradox/index.md">here</a>.
 </div>
