@@ -34,6 +34,14 @@ Then, enable `Gatlingplugin` in `build.sbt`:
 enablePlugin(GatlingPlugin)
 ```
 
+@@@ warning
+
+This version of gatling-thrift is built on `17.11.0` of Finagle family.
+
+If you want to use version `17.10.0` of Finagle family, use version `0.5.0` of gatling-thrift.
+
+@@@
+
 @@@ index
 
 - [Usage](features/usage.md)
