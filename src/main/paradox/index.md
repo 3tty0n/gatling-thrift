@@ -15,7 +15,7 @@ First, you add `gatling-thrift` and `gatling` to `librarydependencies` in `build
 
 ```scala
 librarydependencies ++= Seq(
-  "com.github.3tty0n" %% "gatling-thrift" % "0.5.0",
+  "com.github.3tty0n" %% "gatling-thrift" % "0.6.0",
   "io.gatling" % "gatling-test-framework" % "2.3.0" % "test,it",
   "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.0" % "test,it"
 )
@@ -24,7 +24,7 @@ librarydependencies ++= Seq(
 And add these plugins to `project/plugins.sbt`:
 
 ```scala
-addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "17.10.0")
+addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "17.11.0")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.2")
 ```
 

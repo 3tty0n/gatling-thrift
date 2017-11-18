@@ -3,6 +3,7 @@ import ReleaseTransformations._
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
+  val finatra   = "17.11.0"
   val finatra   = "17.10.0"
   val logback   = "1.1.7"
   val scalatest = "3.0.3"
@@ -15,7 +16,16 @@ lazy val baseSettings = Seq(
   organization := "com.github.3tty0n",
   scalaVersion := "2.12.4",
   scalafmtOnCompile := true,
-  ivyScala := ivyScala.value.map(_.copy(overrideScalaVersion = true)),
+  scalaModuleInfo := Some(
+    sbt.librarymanagement.ScalaModuleInfo(
+      (scalaVersion in update).value,
+      (scalaBinaryVersion in update).value,
+      Vector.empty,
+      checkExplicit = false,
+      filterImplicit = false,
+      overrideScalaVersion = true
+    )
+  ),
   scalacOptions := Seq(
     "-encoding",
     "UTF-8",
