@@ -13,7 +13,6 @@ services:
 
 env:
   - VERSION=$(cat version.sbt | sed -e 's/version in ThisBuild := //g' | cut -d '"' -f2 | cut -d '"' -f1)
-  - COURSIER=true
 
 script:
   - sbt docker:publishLocal
