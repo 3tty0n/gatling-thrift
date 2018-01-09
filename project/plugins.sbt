@@ -11,9 +11,9 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.1")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.6")
 
 // sbt-coursier
-if (System.getenv("COUSIER") == "true") Seq(
-  addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC13")
-) else Seq.empty
+//if (System.getenv("COUSIER") == "true") Seq(
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
+//) else Seq.empty
 
 // for publish
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.0")
