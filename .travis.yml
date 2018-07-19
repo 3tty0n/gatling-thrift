@@ -1,7 +1,6 @@
 language: scala
 jdk: oraclejdk8
-sudo: false
-group: deprecated-2017Q4
+sudo: required
 cache:
   directories:
     - $HOME/.ivy2/cache
@@ -15,8 +14,9 @@ services:
 env:
   - VERSION=$(cat version.sbt | sed -e 's/version in ThisBuild := //g' | cut -d '"' -f2 | cut -d '"' -f1)
 
-script:
+before_install:
   - sbt docker:publishLocal
   - docker run -it -p 127.0.0.1:9911:9911 --rm -d micchon/gatling-thrift-example:${VERSION} bin/gatling-thrift-example
-  - docker ps -a
+
+script:
   - sbt scalafmt::test gatling:test
